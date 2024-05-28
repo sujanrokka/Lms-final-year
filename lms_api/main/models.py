@@ -12,12 +12,18 @@ class Teacher(models.Model):
     mobile_no=models.CharField(max_length=100)
     address=models.TextField()
     
+    class  Meta:
+        verbose_name_plural = '1.Teachers'
+    
  
     
 #course model
 class CourseCategory(models.Model):
     title=models.CharField(max_length=150)
     description=models.TextField()
+    
+    class  Meta:
+        verbose_name_plural = '2.Course Categories'
     
 
 #course model
@@ -26,6 +32,9 @@ class Course(models.Model):
     teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE)
     title=models.CharField(max_length=150)
     description=models.TextField()
+    
+    class  Meta:
+        verbose_name_plural = '3.Courses'
     
 
 #student model
@@ -37,5 +46,8 @@ class Student(models.Model):
     mobile_no=models.CharField(max_length=100)
     address=models.TextField()
     interested_categories=models.TextField()
+    
+    class  Meta:
+        verbose_name_plural = '4.Students'
     
     
