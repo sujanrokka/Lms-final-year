@@ -20,7 +20,10 @@ function Header() {
                 <a className="nav-link" href="#">Teachers</a>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/about">About Us</Link>
+                <Link className="nav-link" to="/user-login">User Login</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/user-register">User Register</Link>
               </li>
             </ul>
           </div>
