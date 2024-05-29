@@ -5,6 +5,7 @@ import Home from './Home';
 import About from './About';
 import CourseDetail from './CourseDetail';
 import Footer from './Footer';
+import Dashboard from './User/Dashboard';
 import Login from './User/Login';
 import Register from './User/Register';
 
@@ -20,6 +21,7 @@ function Main() {
           <Route path="/detail/:course_id" element={<CourseDetail />} />
           <Route path="/user-login" element={<Login />} />
           <Route path="/user-register" element={<Register />} />
+          <Route path="/user-dashboard" element={<Dashboard />} />
         </Routes>
         <Footer />
       </div>

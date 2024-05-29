@@ -33,23 +33,42 @@ function CourseDetail() {
                 </h5>
                 <ul className="list-group list-group-flush ">
                     <li className="list-group-item">Introduction
-                    <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
-                    </li>
-                    <li className="list-group-item">Setup Project
-                    <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
-                    </li>
-                    <li className="list-group-item">Start with functional components
-                    <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
+                    <span className='float-end'>
+                        <span className='me-4'>1:30 mins</span>
+                        <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
+                    </span>
                     </li>
                     <li className="list-group-item">Introduction
-                    <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
+                    <span className='float-end'>
+                        <span className='me-4'>1:30 mins</span>
+                        <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
+                    </span>
                     </li>
-                    <li className="list-group-item">Setup Project
-                    <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
+                    <li className="list-group-item">Introduction
+                    <span className='float-end'>
+                        <span className='me-4'>1:30 mins</span>
+                        <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
+                    </span>
                     </li>
-                    <li className="list-group-item">Start with functional components
-                    <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
+                    <li className="list-group-item">Introduction
+                    <span className='float-end'>
+                        <span className='me-4'>1:30 mins</span>
+                        <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
+                    </span>
                     </li>
+                    <li className="list-group-item">Introduction
+                    <span className='float-end'>
+                        <span className='me-4'>1:30 mins</span>
+                        <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
+                    </span>
+                    </li>
+                    <li className="list-group-item">Introduction
+                    <span className='float-end'>
+                        <span className='me-4'>1:30 mins</span>
+                        <button className='btn btn-sm btn-danger float-end '><i class="bi bi-youtube"></i></button>
+                    </span>
+                    </li>
+                   
                 </ul>
                 </div>
                     <h3 className="pb-1 mb-4 mt-5">Related Courses </h3>
