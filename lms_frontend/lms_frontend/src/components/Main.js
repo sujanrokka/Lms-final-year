@@ -3,11 +3,13 @@
 import Header from './Header';
 import Home from './Home';
 import CourseDetail from './CourseDetail';
+import TeacherDetail from './TeacherDetail';
+
+//users
 import Dashboard from './User/Dashboard';
 import Login from './User/Login';
 import Register from './User/Register';
 import MyCourses from './User/MyCourses';
-import Sidebar from './User/Sidebar';
 import FavouriteCourses from './User/FavouriteCourses';
 import RecommendedCourses from './User/RecommendedCourses';
 import ProfileSetting from './User/ProfileSetting';
@@ -18,7 +20,12 @@ import ChangePassword from './User/ChangePassword';
 import TeacherRegister from './Teacher/TeacherRegister';
 import TeacherLogin from './Teacher/TeacherLogin';
 import TeacherDashboard from './Teacher/TeacherDashboard';
-import TeacherSidebar from './Teacher/TeacherSidebar';
+import TeacherCourses from './Teacher/TeacherCourses';
+import AddCourse from './Teacher/AddCourse';
+import UserList from './Teacher/UserList';
+import TeacherProfileSetting from './Teacher/TeacherProfileSetting';
+import TeacherChangePassword from './Teacher/TeacherChangePassword';
+
 
 
 
@@ -44,10 +51,17 @@ function Main() {
           <Route path="/recommended-courses" element={<RecommendedCourses />} />
           <Route path="/profile-setting" element={<ProfileSetting />} />
           <Route path="/change-password" element={<ChangePassword />} />
+          
           <Route path="/teacher-login" element={<TeacherLogin />} />
           <Route path="/teacher-register" element={<TeacherRegister />} />
           <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
-          <Route path="/teacher-sidebar" element={<TeacherSidebar />} />
+          <Route path="/teacher-courses" element={<TeacherCourses />} />
+          <Route path="/add-course" element={<AddCourse />} />
+          <Route path="/teacher-users" element={<UserList />} />
+          <Route path="/teacher-profile-setting" element={<TeacherProfileSetting />} />
+          <Route path="/teacher-change-password" element={<TeacherChangePassword />} />
+          <Route path="/teacher-detail/:teacher_id" element={<TeacherDetail />} />
+        
         </Routes>
         <Footer />
       </div>
