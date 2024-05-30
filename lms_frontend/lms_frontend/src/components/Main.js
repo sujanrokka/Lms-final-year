@@ -26,7 +26,8 @@ import UserList from './Teacher/UserList';
 import TeacherProfileSetting from './Teacher/TeacherProfileSetting';
 import TeacherChangePassword from './Teacher/TeacherChangePassword';
 
-
+//list pages
+import AllCourses from './AllCourses';
 
 
 import About from './About';
@@ -61,6 +62,7 @@ function Main() {
           <Route path="/teacher-profile-setting" element={<TeacherProfileSetting />} />
           <Route path="/teacher-change-password" element={<TeacherChangePassword />} />
           <Route path="/teacher-detail/:teacher_id" element={<TeacherDetail />} />
+          <Route path="/all-courses" element={<AllCourses />} />
         
         </Routes>
         <Footer />
