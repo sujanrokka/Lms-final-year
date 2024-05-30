@@ -1,14 +1,13 @@
 import {Link} from 'react-router-dom';
 
-import MyCourses from './MyCourses';
-import Sidebar from './Sidebar';
-function Dashboard()
+import TeacherSidebar from './TeacherSidebar';
+function TeacherDashboard()
 {
     return (
 <div className='container mt-4'>
     <div className='row'>
        <aside className="col-md-3">
-       <Sidebar />
+        <TeacherSidebar />
        </aside>
        <section className='col-md-9'>
             Dashboard
@@ -19,4 +18,4 @@ function Dashboard()
 );
 }
 
-export default Dashboard
+export default TeacherDashboard;
