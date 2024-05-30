@@ -1,8 +1,25 @@
 import {Link} from 'react-router-dom';
+import {useEffect,useState} from 'react';
+import axios from 'axios';
+
+const baseUrl='http://127.0.0.1:8000/api/';
 function PopularTeachers(){
-    return(
+       const [teacher,setTeacher]=useState(null);
+       const [error, setError] = useState(null);
+        useEffect(()=> {
+       axios.get(baseUrl+'/teacher/').then((response)=>{
+       console.log(response.data);
+       })
+       .catch(error => {
+        console.error('There was an error fetching the data!', error);
+        setError(error.message);
+    });
+
+     },[]);
         
-      
+
+        
+        return(
         <div className="container mt-3">
               {/* Popular Teachers */}
             <h3 className="pb-1 mb-2">Popular Teachers </h3>
