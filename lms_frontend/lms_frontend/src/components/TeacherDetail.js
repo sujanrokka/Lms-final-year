@@ -4,7 +4,7 @@ return(
     <div className='container mt-3'>
             <div className='row'>
                 <div className='col-4'>
-                    <img src="/logo512.png" className="img-thumbnail" alt="Teacher Image"/>
+                    <img src="/teachers.png" className="img-thumbnail" alt="Teacher Image"/>
                 </div>
                 <div className='col-8'>
                     <h3>Sujan Rokka</h3>
@@ -12,7 +12,7 @@ return(
                          into responsive behavior so they never become 
                          larger than their parent elements
                          and add lightweight styles to them—all via classes.</p>
-                        <p className='fw-bold'>Skills:<Link to='/teacher-detail/1'>PHP</Link>,<Link to='/teacher-detail/1'>Python</Link>,<Link to='/teacher-detail/1'>Java</Link></p>
+                        <p className='fw-bold'>Skills:<Link to='/category/php'>PHP</Link>,<Link to='/category/python'>Python</Link>,<Link to='/category/java'>Java</Link></p>
                         <p className='fw-bold'>Recent Course:<Link to='/teacher-detail/1'>React Js Course</Link></p>
                         <p className='fw-bold'>Rating: 3/5</p>
 
