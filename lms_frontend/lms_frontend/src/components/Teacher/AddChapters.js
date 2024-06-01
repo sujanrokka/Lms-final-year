@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 import TeacherSidebar from './TeacherSidebar'
-function AddCourse()
+function AddChapters()
 {
     return (
         <div className='container mt-4'>
@@ -10,7 +10,7 @@ function AddCourse()
             </aside>
             <div className='col-9'>
             <div className='card'>
-                <h3 className='card-header'>Add Course</h3>
+                <h3 className='card-header'>Add Chapter</h3>
                 <div className='card-body'>
                 <form>
                 <div className="mb-3">
@@ -23,12 +23,12 @@ function AddCourse()
                 </div>
 
                 <div className="mb-3">
-                    <label for="video" className="form-label float-start">Featured Image</label>
+                    <label for="video" className="form-label float-start">Video</label>
                     <input type="file" className="form-control" id="video" />
                 </div>
                 <div className="mb-3">
-                    <label for="techs" className="form-label float-start">Technologies</label>
-                    <textarea className="form-control" placeholder="php,python,java" id='techs'  />
+                    <label for="techs" className="form-label float-start">Remarks</label>
+                    <textarea className="form-control" placeholder="this video is focused on basic intro to python" id='techs'  />
                 </div>
                 <button type="submit" className="btn btn-primary float-start">Submit</button>
                 </form>
@@ -41,4 +41,4 @@ function AddCourse()
 );
 }
 
-export default AddCourse;
+export default AddChapters;

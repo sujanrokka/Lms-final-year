@@ -18,14 +18,31 @@ function TeacherLogin()
     }
 
     const submitForm=()=>{
-       console.log(teacherLoginData);
+        const teacherFormData=new FormData();
+        try{
+        teacherFormData.append('email',teacherLoginData.email);
+        teacherFormData.append('password',teacherLoginData.password);
+        axios.post(baseUrl+'/teacher-login',teacherFormData)
+       .then((res)=>{
+        if(res.data.bool===true){
+            localStorage.setItem('teacherLoginStatus',true)
+            window.location.href='/teacher-dashboard';
+
+        }
+       });
+    }catch(error){
+        console.log(error);
+    }
+}
+const teacherLoginStatus=localStorage.getItem('teacherLoginStatus')
+if(teacherLoginStatus==='true'){
+    window.location.href='/teacher-dashboard';
 }
     useEffect(()=>{
         document.title='TeacherLogin'
     });
 
-
-        return (
+ return (
 <div className='container mt-4'>
     <div className='row'>
         <div className='col-6 offset-3'>
@@ -40,7 +57,7 @@ function TeacherLogin()
             </div>
             <div className="mb-3">
                 <label for="exampleInputPassword1" className="form-label float-start">Password</label>
-                <input value={teacherLoginData.password} name="password" type="password" onChange={handleChange} className="form-control" onChange={handleChange}
+                <input value={teacherLoginData.password} name="password" type="password" onChange={handleChange} className="form-control"
                 id="exampleInputPassword1" />
             </div>
             {/* <div className="mb-3 form-check">
@@ -56,6 +73,12 @@ function TeacherLogin()
 </div>
 
 );
+}
 
 
 export default TeacherLogin;
+
+
+
+
+

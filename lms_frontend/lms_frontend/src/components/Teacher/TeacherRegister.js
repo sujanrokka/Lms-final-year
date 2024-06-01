@@ -52,6 +52,15 @@ function TeacherRegister()
     };
     //end 
 
+    useEffect(()=>{
+        document.title='TeacherRegister'
+    });
+
+    const teacherLoginStatus=localStorage.getItem('teacherLoginStatus')
+    if(teacherLoginStatus=='true'){
+    window.location.href="/teacher-dashboard";
+}
+
     return (
         <div className='container mt-4'>
         <div className='row'>
@@ -101,7 +110,4 @@ function TeacherRegister()
 }
 
 export default TeacherRegister
-
-
-
 
