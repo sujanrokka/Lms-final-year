@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import TeacherSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer
 from rest_framework.response import Response
-from .models import Teacher,Course
+from .models import Teacher,Course,CourseCategory
 from rest_framework import generics
 from rest_framework import permissions
 from django.http import JsonResponse,HttpResponse
@@ -51,3 +51,12 @@ def teacher_login(request):
         except ObjectDoesNotExist:
             return JsonResponse({'bool': False})
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+class CategoryList(generics.ListCreateAPIView):
+    queryset = CourseCategory.objects.all()
+    serializer_class = CategorySerializer
+  
+  
+class CourseList(generics.ListCreateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer

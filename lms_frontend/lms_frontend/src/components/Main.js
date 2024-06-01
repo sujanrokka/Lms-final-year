@@ -58,6 +58,7 @@ function Main() {
           <Route path="/profile-setting" element={<ProfileSetting />} />
           <Route path="/change-password" element={<ChangePassword />} />
           
+          
           <Route path="/teacher-login" element={<TeacherLogin />} />
           <Route path="/teacher-logout" element={<TeacherLogout />} />
           <Route path="/teacher-register" element={<TeacherRegister />} />
