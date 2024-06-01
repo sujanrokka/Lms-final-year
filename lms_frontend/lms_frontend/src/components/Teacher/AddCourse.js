@@ -14,7 +14,7 @@ function AddCourse()
         techs:'' 
     });
 
-    //fetch categoty when page load
+    //fetch category when page load
     useEffect(()=>{
         try{
             axios.get(baseUrl+'/category')
@@ -56,7 +56,7 @@ function AddCourse()
             }
         })
        .then((res)=>{
-        console.log(res.data);
+        window.location.href='/add-course';
         });
     }catch(error){
         console.log(error);
@@ -76,7 +76,7 @@ function AddCourse()
                 <div className="mb-3">
                     <label htmlFor="title" className="form-label float-start">Category</label>
                    <select name='category' onChange={handleChange} className='form-control'>
-                    {cats.map((category,index)=>{return <option key={index}value={category.id}>{category.title}</option> })}
+                    {cats.map((category,index)=>{return <option key={index} value={category.id}>{category.title}</option> })}
                    </select>
                 </div>
                 <div className="mb-3">

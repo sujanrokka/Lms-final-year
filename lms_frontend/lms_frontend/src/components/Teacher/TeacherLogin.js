@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+
 import {useEffect,useState} from 'react';
 import axios from 'axios';
 const baseUrl='http://127.0.0.1:8000/api';
@@ -19,14 +19,15 @@ function TeacherLogin()
 
     const submitForm=()=>{
         const teacherFormData=new FormData();
-        try{
         teacherFormData.append('email',teacherLoginData.email);
         teacherFormData.append('password',teacherLoginData.password);
-        axios.post(baseUrl+'/teacher-login',teacherFormData)
-       .then((res)=>{
-        if(res.data.bool===true){
-            localStorage.setItem('teacherLoginStatus',true)
-            window.location.href='/teacher-dashboard';
+        try{
+                axios.post(baseUrl+'/teacher-login',teacherFormData)
+                .then((res)=>{
+                if(res.data.bool===true){
+                localStorage.setItem('teacherLoginStatus',true);
+                localStorage.setItem('teacherId',res.data.teacher_id);
+                window.location.href='/teacher-dashboard';
 
         }
        });
@@ -34,7 +35,7 @@ function TeacherLogin()
         console.log(error);
     }
 }
-const teacherLoginStatus=localStorage.getItem('teacherLoginStatus')
+const teacherLoginStatus=localStorage.getItem('teacherLoginStatus');
 if(teacherLoginStatus==='true'){
     window.location.href='/teacher-dashboard';
 }

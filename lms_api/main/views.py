@@ -7,7 +7,7 @@ from rest_framework import generics
 from rest_framework import permissions
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.core.exceptions import ObjectDoesNotExist
+
 
 
 #using normal class way
@@ -42,15 +42,15 @@ class TeacherDetailList(generics.RetrieveUpdateDestroyAPIView):
 
 @csrf_exempt
 def teacher_login(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        try:
-            teacherData = Teacher.objects.get(email=email, password=password)
-            return JsonResponse({'bool': True})
-        except ObjectDoesNotExist:
-            return JsonResponse({'bool': False})
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    teacherData = Teacher.objects.get(email=email, password=password)
+    if teacherData:
+        return JsonResponse({'bool': True,'teacher_id':teacherData.id})
+    else:
+        return JsonResponse({'bool': False})
+    
+   
 
 class CategoryList(generics.ListCreateAPIView):
     queryset = CourseCategory.objects.all()
@@ -60,3 +60,12 @@ class CategoryList(generics.ListCreateAPIView):
 class CourseList(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    
+#specic teaccher course 
+class TeacherCourseList(generics.ListAPIView):
+    serializer_class = CourseSerializer
+    
+    def get_queryset(self):
+        teacher_id=self.kwargs['teacher_id']
+        teacher=Teacher.objects.get(pk=teacher_id)
+        return Course.objects.filter(teacher=teacher)
