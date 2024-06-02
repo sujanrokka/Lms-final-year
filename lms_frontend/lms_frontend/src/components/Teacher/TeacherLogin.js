@@ -10,6 +10,8 @@ function TeacherLogin()
 
     });
 
+    const [errorMsg,seterrorMsg]=useState('');
+
     const handleChange=(event)=>{
         setteacherLoginData({
            ...teacherLoginData,
@@ -24,11 +26,14 @@ function TeacherLogin()
         try{
                 axios.post(baseUrl+'/teacher-login',teacherFormData)
                 .then((res)=>{
-                if(res.data.bool===true){
-                localStorage.setItem('teacherLoginStatus',true);
-                localStorage.setItem('teacherId',res.data.teacher_id);
-                window.location.href='/teacher-dashboard';
+                if(res.data.bool==true){
+                    localStorage.setItem('teacherLoginStatus',true);
+                    localStorage.setItem('teacherId',res.data.teacher_id);
+                    window.location.href='/teacher-dashboard';
 
+        }
+        else{
+            seterrorMsg('Invalid email or Password')
         }
        });
     }catch(error){
@@ -50,23 +55,24 @@ if(teacherLoginStatus==='true'){
         <div className='card'>
             <h3 className='card-header'>Teacher Login</h3>
             <div className='card-body'>
-            <form>
+                {errorMsg && <p className='text-danger'>{errorMsg}</p>}
+            {/* <form> */}
             <div className="mb-3">
                 <label for="exampleInputEmail1" className="form-label float-start">Email</label>
-                <input value={teacherLoginData.email} name="email" type="email" className="form-control"  onChange={handleChange} />
+                <input value={teacherLoginData.email} name="email" type="email" className="form-control"  onChange={handleChange} id="email"  />
             
             </div>
             <div className="mb-3">
                 <label for="exampleInputPassword1" className="form-label float-start">Password</label>
                 <input value={teacherLoginData.password} name="password" type="password" onChange={handleChange} className="form-control"
-                id="exampleInputPassword1" />
+                id="Password1" />
             </div>
             {/* <div className="mb-3 form-check">
                 <input type="checkbox" className="form-check-input float-start" id="exampleCheck1" />
                 <label className="form-control float-start" for="exampleCheck1">Remember Me</label>
             </div> */}
             <button type="submit" onClick={submitForm} className="btn btn-primary float-start">Login</button>
-            </form>
+            {/* </form> */}
             </div>
         </div>
     </div>
