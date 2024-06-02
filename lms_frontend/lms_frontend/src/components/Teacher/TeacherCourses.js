@@ -50,7 +50,7 @@ function TeacherCourses()
                             <td><Link to="/">678</Link></td>
                             <td>
                                 <button className='btn btn-danger btn-sm '>Delete</button>
-                                <Link class="btn btn-success btn-sm  ms-3" to="/add-chapter/2">Add Chapter</Link>
+                                <Link class="btn btn-success btn-sm  ms-3" to={'/add-chapter/'+course.id}>Add Chapter</Link>
                             </td>
                         </tr>
                         )}
