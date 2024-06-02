@@ -10,16 +10,21 @@ urlpatterns = [
     #category
      path('category/',views.CategoryList.as_view()),
      
-    #category
+    #course
      path('course/',views.CourseList.as_view()),
      
-    #chapter
-     path('chapter/',views.ChapterList.as_view()),
      
-     #specif course chapter
+    #specific course chapter
      path('course-chapters/<int:course_id>',views.CourseChapterList.as_view()),
+     
+     #Specific chapter
+     path('chapter/<int:pk>',views.ChapterDetailView.as_view()),
      
      
      #teacher courses
      path('teacher-courses/<int:teacher_id>',views.TeacherCourseList.as_view()),
+     
+     #Course Detail
+     path('teacher-course-detail/<int:pk>',views.TeacherCourseDetail.as_view()),
+     
 ]

@@ -65,7 +65,7 @@ class ChapterList(generics.ListCreateAPIView):
 
     
 #specic teacher course 
-class TeacherCourseList(generics.ListAPIView):
+class TeacherCourseList(generics.ListCreateAPIView):
     serializer_class = CourseSerializer
     
     def get_queryset(self):
@@ -73,6 +73,12 @@ class TeacherCourseList(generics.ListAPIView):
         teacher=Teacher.objects.get(pk=teacher_id)
         return Course.objects.filter(teacher=teacher)
     
+#
+class TeacherCourseDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    
+  
     
 
 
@@ -84,3 +90,8 @@ class CourseChapterList(generics.ListAPIView):
         course=Course.objects.get(pk=course_id)
         return Chapter.objects.filter(course=course)
         
+
+class ChapterDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Chapter.objects.all()
+    serializer_class = ChapterSerializer
+    

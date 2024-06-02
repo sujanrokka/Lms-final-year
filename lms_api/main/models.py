@@ -12,6 +12,9 @@ class Teacher(models.Model):
     
     class  Meta:
         verbose_name_plural = '1.Teachers'
+    def __str__(self):
+         return self.full_name
+    
      
  
     
@@ -37,6 +40,10 @@ class Course(models.Model):
     
     class  Meta:
         verbose_name_plural = '3.Courses'
+        
+    def __str__(self):
+         return self.title
+    
     
 #course model   
 class Chapter(models.Model):
@@ -48,6 +55,10 @@ class Chapter(models.Model):
     
     class  Meta:
         verbose_name_plural = '4.Chapters'
+        
+    def __str__(self):
+         return self.title
+    
     
 
 #student model

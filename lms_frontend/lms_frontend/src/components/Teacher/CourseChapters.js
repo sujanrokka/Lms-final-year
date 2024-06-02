@@ -7,11 +7,11 @@ const baseUrl='http://127.0.0.1:8000/api';
 
 
 
+
 function CourseChapters(){
     const [chapterData,setChapterData]=useState([]);
     const [totalResult,settotalResult]=useState([0]);
     const {course_id}=useParams();
-   
     console.log(course_id);
     useEffect(()=>
     {
@@ -31,13 +31,38 @@ function CourseChapters(){
 
         //delete data
         const Swal = require('sweetalert2')
-        const handleDeleteClick=()=>{
+
+        const handleDeleteClick=(chapter_id)=>{
             Swal.fire({
                 title: 'Confirm',
                 text: 'Are you sure you want to delete?',
                 icon: 'info',
                 confirmButtonText: 'Continue',
                 showCancelButton:true
+              }).then((result)=>{
+                if(result.isConfirmed){
+                    try{
+                        axios.delete(baseUrl+'/chapter/'+chapter_id)
+                        .then((response)=>{
+        
+                            Swal.fire('error','Data has not been deleted!');
+                            try{
+                                axios.get(baseUrl+'/course-chapters/'+course_id)
+                                .then((response)=>{
+                                    settotalResult(response.data.length);
+                                    setChapterData(response.data);
+                                });
+                                }catch(error){
+                                    console.log(error);
+                                }  
+                        });
+                            Swal.fire('success','Data has been deleted');
+                    }catch(error){
+                       
+                    }
+                }else{
+                        Swal.fire('error','Data has not been deleted!');//sweetalert
+                    }
               });
 
         }
@@ -49,7 +74,7 @@ function CourseChapters(){
             </aside>
     <section className="col-md-9">
         <div className='card'>
-        <h5 className='card-header'>All Chapters ({totalResult})</h5>
+        <Link className='card-header'>All Chapters ({totalResult})</Link> <Link className='btn btn-success btn-sm float-end' to ={'/add-chapter/'+course_id}>Add Chapter </Link> </h5>
         <div className='card-body'>
         <table className='table table-bordered'>
                     <thead>
@@ -73,15 +98,14 @@ function CourseChapters(){
                             <td>{chapter.remarks} </td>
                             <td>
                             <Link to={'/edit-chapter/'+chapter.id}  className='btn btn-sm text-white btn-info '><i class="bi bi-pencil-square"></i></Link>
-                            <button onClick={handleDeleteClick} to={'/delete-chapter/'+chapter.id} className='btn btn-sm btn-danger '><i class="bi bi-trash"></i></button>
-            
+                            <button onClick={()=>handleDeleteClick(chapter.id)} className='btn btn-sm btn-danger '><i class="bi bi-trash"></i></button>
+                           
                             </td>
                         </tr>
+                        
                         )}
                     </tbody>
-                </table>
-       
-        
+                </table>   
     </div>
     </div>
 </section>
