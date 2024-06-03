@@ -48,13 +48,14 @@ class Course(models.Model):
         verbose_name_plural = '3.Courses'
         
     def related_videos(self):
-        related_videos=Course.objects.filter(techs_icontains=self.techs)
+        related_videos=Course.objects.filter(techs__icontains=self.techs)
         return serializers.serialize('json',related_videos)
     
     def tech_list(self):
         tech_list=self.techs.split(',')
         return tech_list    
-        
+
+    
     def __str__(self):
          return self.title
     
@@ -80,9 +81,7 @@ class Student(models.Model):
     full_name=models.CharField(max_length=100)
     email=models.CharField(max_length=100)
     password=models.CharField(max_length=100)
-    qualification=models.CharField(max_length=100)
-    mobile_no=models.CharField(max_length=100)
-    address=models.TextField()
+    username=models.CharField(max_length=100)
     interested_categories=models.TextField()
     
     class  Meta:

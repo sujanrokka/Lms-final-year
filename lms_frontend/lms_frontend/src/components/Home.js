@@ -1,11 +1,13 @@
  
  import {Link} from 'react-router-dom';
 import AllCourses from './AllCourses';
+import { useParams } from 'react-router-dom';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
 const baseUrl='http://127.0.0.1:8000/api';
 
 function Home() {
+    const {course_id} = useParams();
     const [courseData,setCourseData]=useState([]);
     useEffect(()=>
     {
@@ -15,6 +17,7 @@ function Home() {
         {
             console.log(response.data);
             setCourseData(response.data);
+           
         });
         }catch(error){
             console.log(error);
@@ -28,8 +31,6 @@ function Home() {
             <h3 className="pb-1 mb-2">Latest Courses <Link to="/all-courses" class="float-end">See All</Link></h3>
             <div className="row mb-4">
                 {courseData && courseData.map((course,index)=>
-
-              
                 <div className="col-md-3 mb-4">
                     <div className="card">
                         <Link to={`/detail/${course.id}`}><img src={course.featured_img} className="card-img-top" alt={course.title}/></Link>

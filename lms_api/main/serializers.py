@@ -15,6 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
         
 
 class CourseSerializer(serializers.ModelSerializer):
+
     class Meta:
         model=models.Course
         fields=['id','category','teacher','title','description','featured_img','techs','course_chapters','related_videos','tech_list']
@@ -25,3 +26,9 @@ class ChapterSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.Chapter
         fields=['id','course','title','description','video','remarks']
+        
+    
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=models.Student
+        fields=['id','full_name','email','password','username','interested_categories']

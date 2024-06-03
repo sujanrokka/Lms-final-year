@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer
 from rest_framework.response import Response
-from .models import Teacher,Course,CourseCategory,Chapter
+from .models import Teacher,Course,CourseCategory,Chapter,Student
 from rest_framework import generics
 from rest_framework import permissions
 from django.http import JsonResponse,HttpResponse
@@ -119,4 +119,27 @@ class CourseChapterList(generics.ListAPIView):
 class ChapterDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Chapter.objects.all()
     serializer_class = ChapterSerializer
+    
+
+#StudentData
+class StudentList(generics.ListCreateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    # permission_classes=[permissions.IsAuthenticated]
+    
+    
+@csrf_exempt
+def student_login(request):
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    try:
+        studentData = Student.objects.get(email=email, password=password)
+    
+    except Student.DoesNotExist:
+        studentData=None
+    
+    if studentData:
+        return JsonResponse({'bool': True,'student_id':studentData.id})
+    else:
+        return JsonResponse({'bool': False})
     
