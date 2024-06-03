@@ -37,6 +37,7 @@ function TeacherCourses()
                     <thead>
                         <tr>
                         <th>Name</th>
+                        <th>Image</th>
                         <th>Total Enrolled</th>
                         <th>Action</th>
                         </tr>

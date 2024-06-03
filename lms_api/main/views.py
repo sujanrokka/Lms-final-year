@@ -53,9 +53,19 @@ class CategoryList(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
   
   
+  #all course list 
 class CourseList(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    
+    def get_queryset(self):
+        qs= super().get_queryset()
+        if 'result' in self.request.GET:
+            limit=int(self.request.GET['result'])
+            qs=Course.objects.all().order_by('-id')[:limit]
+        return qs
+
+
 
 #chapter list
 class ChapterList(generics.ListCreateAPIView):
@@ -74,7 +84,7 @@ class TeacherCourseList(generics.ListCreateAPIView):
         return Course.objects.filter(teacher=teacher)
     
 #
-class TeacherCourseDetail(generics.RetrieveUpdateDestroyAPIView):
+class TeacherCourseDetail(generics.RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     
