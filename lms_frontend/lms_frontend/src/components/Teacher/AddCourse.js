@@ -17,7 +17,7 @@ function AddCourse()
     //fetch category when page load
     useEffect(()=>{
         try{
-            axios.get(baseUrl+'/category')
+            axios.get(baseUrl+'/category/')
             .then((res)=>{
              setCats(res.data);
             
@@ -41,10 +41,11 @@ function AddCourse()
         });
     }
 
-    const formSubmit=()=>{
+    const formSubmit=(e)=>{
+        e.preventDefault();
         const formData=new FormData();
         formData.append('category',courseData.category);
-        formData.append('teacher',1);
+        formData.append('teacher',2);
         formData.append('title',courseData.title);
         formData.append('description',courseData.description);
         formData.append('featured_img',courseData.f_img,courseData.f_img.name);
@@ -59,7 +60,7 @@ function AddCourse()
         window.location.href='/add-course';
         });
     }catch(error){
-        console.log(error);
+        console.log(error.data);
        }
     };
     return (
@@ -70,6 +71,7 @@ function AddCourse()
             </aside>
             <div className='col-9'>
             <div className='card'>
+            {JSON.stringify(courseData)}
                 <h3 className='card-header'>Add Course</h3>
                 <div className='card-body'>
                 <form>

@@ -61,7 +61,7 @@ function CourseChapters(){
                        
                     }
                 }else{
-                        Swal.fire('error','Data has not been deleted!');//sweetalert
+                        Swal.fire('error','Data has not been deleted!');
                     }
               });
 
@@ -74,7 +74,7 @@ function CourseChapters(){
             </aside>
     <section className="col-md-9">
         <div className='card'>
-        <Link className='card-header'>All Chapters ({totalResult})</Link> <Link className='btn btn-success btn-sm float-end' to ={'/add-chapter/'+course_id}>Add Chapter </Link> </h5>
+       <h5> <Link className='card-header'>All Chapters ({totalResult})</Link> <Link className='btn btn-success btn-sm float-end' to ={'/add-chapter/'+course_id}>Add Chapter </Link> </h5>
         <div className='card-body'>
         <table className='table table-bordered'>
                     <thead>
