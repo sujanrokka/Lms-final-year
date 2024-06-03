@@ -36,6 +36,7 @@ import AllCourses from './AllCourses';
 import PopularCourses from './PopularCourses';
 import PopularTeachers from './PopularTeachers';
 import CategoryCourses from './CategoryCourses';
+import TeacherSkillCourses from './TeacherSkillCourses';
 
 
 
@@ -81,6 +82,7 @@ function Main() {
           <Route path="/popular-courses" element={<PopularCourses />} />
           <Route path="/popular-teachers" element={<PopularTeachers />} />
           <Route path="/category/:category_slug" element={<CategoryCourses />} />
+          <Route path="/teacher-skill-courses/:skill-name/:teacher_id" element={<TeacherSkillCourses />} />
           
         </Routes>
         <Footer />
