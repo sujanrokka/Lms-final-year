@@ -61,11 +61,20 @@ class CourseList(generics.ListCreateAPIView):
     def get_queryset(self):
         qs= super().get_queryset()
         if 'result' in self.request.GET:
-            limit=int(self.request.GET['result'])
+            limit=int(self.request.GET['result']) 
             qs=Course.objects.all().order_by('-id')[:limit]
+        
+        if 'category' in self.request.GET:
+            category=self.request.GET['category']
+            qs=Course.objects.filter(techs_icontains=category)
         return qs
 
 
+#yesma check garna baki
+class CourseDetailView(generics.RetrieveAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    
 
 #chapter list
 class ChapterList(generics.ListCreateAPIView):

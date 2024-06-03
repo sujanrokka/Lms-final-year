@@ -1,9 +1,10 @@
 from django.db import models
-
+from django.core import serializers
 
 #teacher model
 class Teacher(models.Model):
     full_name=models.CharField(max_length=100)
+    detail=models.TextField(null=True)
     email=models.CharField(max_length=100)
     password=models.CharField(max_length=100)
     qualification=models.CharField(max_length=100)
@@ -32,7 +33,7 @@ class CourseCategory(models.Model):
 #course model
 class Course(models.Model):
     category=models.ForeignKey(CourseCategory,on_delete=models.CASCADE)
-    teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE)
+    teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE,related_name='teacher_courses')
     title=models.CharField(max_length=150)
     description=models.TextField()
     featured_img=models.ImageField(upload_to='course_imgs/',null=True)
@@ -40,6 +41,14 @@ class Course(models.Model):
     
     class  Meta:
         verbose_name_plural = '3.Courses'
+        
+    def related_videos(self):
+        related_videos=Course.objects.filter(techs_icontains=self.techs)
+        return serializers.serialize('json',related_videos)
+    
+    def tech_list(self):
+        tech_list=self.techs.split(',')
+        return tech_list    
         
     def __str__(self):
          return self.title

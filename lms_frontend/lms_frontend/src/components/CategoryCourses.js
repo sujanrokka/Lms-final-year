@@ -1,5 +1,23 @@
 import {Link} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import {useState,useEffect} from 'react';
+import axios from 'axios';
+const baseUrl='http://127.0.0.1:8000/api';
 function CategoryCourses(){
+    let {category_id} = useParams();
+    const [courseData,setCourseData]=useState([]);
+    useEffect(()=>
+    {
+        try{
+        axios.get(baseUrl+'/course/').then((response)=>
+        {
+            console.log(response.data);
+            setCourseData(response.data);
+        });
+        }catch(error){
+            console.log(error);
+        }
+        },[]);
     return(
         
       
