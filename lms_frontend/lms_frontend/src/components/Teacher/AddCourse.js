@@ -43,9 +43,10 @@ function AddCourse()
 
     const formSubmit=(e)=>{
         e.preventDefault();
+        const teacherId=localStorage.getItem('teacherId');
         const formData=new FormData();
         formData.append('category',courseData.category);
-        formData.append('teacher',2);
+        formData.append('teacher',teacherId);
         formData.append('title',courseData.title);
         formData.append('description',courseData.description);
         formData.append('featured_img',courseData.f_img,courseData.f_img.name);

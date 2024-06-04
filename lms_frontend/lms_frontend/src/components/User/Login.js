@@ -22,7 +22,7 @@ function Login()
         StudentFormData.append('email',studentLoginData.email);
         StudentFormData.append('password',studentLoginData.password);
         try{
-                axios.post(baseUrl+'/student-login',StudentFormData)
+                axios.post(baseUrl+'/student-login/',StudentFormData)
                 .then((res)=>{
                 if(res.data.bool===true){
                     localStorage.setItem('studentLoginStatus',true);
@@ -56,22 +56,21 @@ if(studentLoginStatus==='true'){
             <h3 className='card-header'>User Login</h3>
             <div className='card-body'>
             {errorMsg && <p className='text-danger'>{errorMsg}</p>}
-            <form>
             <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label float-start">Username</label>
-                <input type="email" name="email" onChange={handleChange}className="form-control"  />
+                <input type="email" value={studentLoginData.password} name="email" onChange={handleChange}className="form-control"  />
             
             </div>
             <div className="mb-3">
                 <label  htmlFor="exampleInputPassword1" className="form-label float-start">Password</label>
-                <input type="password" name="password" onChange={handleChange}className="form-control" id="exampleInputPassword1" />
+                <input type="password" value={studentLoginData.password} name="password" onChange={handleChange}className="form-control" id="exampleInputPassword1" />
             </div>
             {/* <div className="mb-3 form-check">
                 <input type="checkbox" className="form-check-input" id="exampleCheck1" />
                 <label className="form-control"onChange={handleChange} for="exampleCheck1">Remember Me</label>
             </div> */}
             <button type="submit" onClick={submitForm} className="btn btn-primary">Login</button>
-            </form>
+
             </div>
         </div>
     </div>

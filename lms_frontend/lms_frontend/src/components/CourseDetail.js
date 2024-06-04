@@ -33,6 +33,28 @@ function CourseDetail() {
                 console.log(error);
             }
             },[]);
+
+        const enrollCourse=()=>{
+            const studentId=localStorage.getItem('studentId');
+            const formData=new FormData();
+            formData.append('course',course_id);
+            formData.append('student',studentId);
+          
+            try{
+            axios.post(baseUrl+'/course/',formData,{
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                }
+            })
+           .then((res)=>{
+            console.log(res.data)
+            // window.location.href='/add-course';
+            });
+        }catch(error){
+            console.log(error.data);
+           }
+
+        }
     return (
         <div>
         <div className='container mt-3'>
@@ -45,15 +67,17 @@ function CourseDetail() {
                     <h3>{courseData.title}</h3>
                     <p>{courseData.description}</p>
                         <p className='fw-bold'>Course By:<Link to={`/teacher-detail/${teacherData.id}`}>{teacherData.full_name}</Link></p>
-                        <p className='fw-bold'>Duration: 5 hrs 30 minutes</p>
                         <p className='fw-bold'>Techs:&nbsp;
                         {techListData.map((tech,index)=>
-                        <Link className="badge bg-warning ml-2" to={`/category/${tech.trim()}`}>{tech}</Link>
+                        <>
+                        <Link className="badge bg-warning ml-2" to={`/category/${tech.trim()}`}>{tech.trim()}</Link>
+                        </>
                         )}
-
                         </p>
+                        <p className='fw-bold'>Duration: 5 hrs 30 minutes</p>
                         <p className='fw-bold'>Total enrolled: 500 students</p>
                         <p className='fw-bold'>Rating: 3/5</p>
+                        <p><Link to="/" onClick={enrollCourse} className='btn btn-success'>Enroll in this course</Link></p>
 
                 </div>
             </div>)}

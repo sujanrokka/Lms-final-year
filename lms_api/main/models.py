@@ -86,5 +86,21 @@ class Student(models.Model):
     
     class  Meta:
         verbose_name_plural = '5.Students'
+        
+    
+    def __str__(self):
+         return self.full_name
+    
+
+#student course enrollment
+class StudentCourseEnrollment(models.Model):
+    course=models.ForeignKey(Course,on_delete=models.CASCADE,related_name='enrolled_courses')
+    student=models.ForeignKey(Student,on_delete=models.CASCADE,related_name='enrolled_student')
+    enrolled_time=models.DateTimeField(auto_now_add=True)
+    
+    class  Meta:
+        verbose_name_plural = '6.Enrolled Courses'
+        
+    
     
     
