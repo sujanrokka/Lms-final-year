@@ -3,10 +3,13 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import {Link} from 'react-router-dom';
+
 import {useState,useEffect} from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 const siteUrl='http://127.0.0.1:8000/';
 const baseUrl='http://127.0.0.1:8000/api';
+
 
 function CourseDetail() {
     const [courseData,setCourseData]=useState();
@@ -31,6 +34,10 @@ function CourseDetail() {
             });
             }catch(error){
                 console.log(error);
+            const studentLoginStatus=localStorage.getItem('studentLoginStatus');
+            if(studentLoginStatus==='true'){
+                window.location.href='/student-dashboard';
+            }
             }
             },[]);
 
@@ -41,14 +48,23 @@ function CourseDetail() {
             formData.append('student',studentId);
           
             try{
-            axios.post(baseUrl+'/course/',formData,{
+            axios.post(baseUrl+'/student-enroll-course/',formData,{
                 headers:{
                     'Content-Type':'multipart/form-data'
                 }
             })
            .then((res)=>{
-            console.log(res.data)
-            // window.location.href='/add-course';
+            if(res.status===200||res.status===201){
+                Swal.fire{{ 
+                    title:'ou have sucessfully enrolled ',
+                    toast:'success',
+                    timer:3000,
+                    position:'top-right',
+                    timerProgressBar:true,
+                    showConfirmButton:false
+                 }};
+            
+                }
             });
         }catch(error){
             console.log(error.data);
@@ -77,7 +93,7 @@ function CourseDetail() {
                         <p className='fw-bold'>Duration: 5 hrs 30 minutes</p>
                         <p className='fw-bold'>Total enrolled: 500 students</p>
                         <p className='fw-bold'>Rating: 3/5</p>
-                        <p><Link to="/" onClick={enrollCourse} className='btn btn-success'>Enroll in this course</Link></p>
+                        <p><button type='button'  onClick={enrollCourse} className='btn btn-success'>Enroll in this course</button></p>
 
                 </div>
             </div>)}

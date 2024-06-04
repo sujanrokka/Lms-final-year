@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer
 from rest_framework.response import Response
-from .models import Teacher,Course,CourseCategory,Chapter,Student
+from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment
 from rest_framework import generics
 from rest_framework import permissions
 from django.http import JsonResponse,HttpResponse
@@ -142,4 +142,8 @@ def student_login(request):
         return JsonResponse({'bool': True,'student_id':studentData.id})
     else:
         return JsonResponse({'bool': False})
+    
+class StudentEnrollCourseList(generics.ListCreateAPIView):
+    queryset =StudentCourseEnrollment.objects.all()
+    serializer_class = StudentCourseEnrollSerializer
     

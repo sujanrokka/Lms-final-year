@@ -2,6 +2,7 @@ import {Link} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import TeacherSidebar from './TeacherSidebar';
 import {useState,useEffect} from 'react';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 const baseUrl='http://127.0.0.1:8000/api';
 
@@ -40,13 +41,23 @@ function AddChapters()
         formData.append('video',chapterData.video,chapterData.video.name);
         formData.append('remarks',chapterData.remarks);
         try{
-        axios.post(baseUrl+'/chapter/',formData,{
+        axios.post(baseUrl+'/course-chapters/'+course_id,formData,{
             headers:{
                 'Content-Type':'multipart/form-data'
             }
         })
        .then((res)=>{
-        window.location.href='/add-chapter/1';
+        if(res.status==200||res.status==201){
+            Swal.fire{{ 
+                title:'Data has been added',
+                toast:'success',
+                timer:3000,
+                position:'top-right',
+                timerProgressBar:true,
+                showConfirmButton:false
+             }};
+             window.location.reload()
+        }
         });
     }catch(error){
         console.log(error);
