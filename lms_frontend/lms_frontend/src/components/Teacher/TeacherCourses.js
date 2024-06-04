@@ -12,7 +12,7 @@ function TeacherCourses()
     useEffect(()=>
     {
         try{
-        axios.get(baseUrl+'/teacher-courses/'+teacherId).then((response)=>
+        axios.get(baseUrl+'/teacher-courses/'+teacherId+'/').then((response)=>
         {
             console.log(response.data);
             setCourseData(response.data);
@@ -43,7 +43,7 @@ function TeacherCourses()
                         </tr>
                     </thead>
                     <tbody>
-                        {courseData.map((course,index)=>
+                        {courseData && courseData.map((course,index)=>
                         
                         <tr>
                             <td><Link to={'/all-chapters/'+course.id} > {course.title} </Link> </td>

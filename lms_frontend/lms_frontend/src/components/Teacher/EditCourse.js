@@ -20,7 +20,7 @@ function EditCourse()
     const {course_id}=useParams();
     useEffect(()=>{
         try{
-            axios.get(baseUrl+'/category')
+            axios.get(baseUrl+'/category/')
             .then((res)=>{
              setCats(res.data);
             

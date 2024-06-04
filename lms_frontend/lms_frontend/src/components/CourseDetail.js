@@ -9,7 +9,7 @@ const siteUrl='http://127.0.0.1:8000/';
 const baseUrl='http://127.0.0.1:8000/api';
 
 function CourseDetail() {
-    const [courseData,setCourseData]=useState([]);
+    const [courseData,setCourseData]=useState();
     const [teacherData,setteacherData]=useState([]);
     const [chapterData,setChapterData]=useState([]);
     const [relatedcourseData,setrelatedcourseData]=useState([]);
@@ -36,7 +36,8 @@ function CourseDetail() {
     return (
         <div>
         <div className='container mt-3'>
-            <div className='row'>
+
+           {courseData && ( <div className='row'>
                 <div className='col-4'>
                     <img src={courseData.featured_img} className="img-thumbnail" alt={courseData.title}/>
                 </div>
@@ -55,14 +56,14 @@ function CourseDetail() {
                         <p className='fw-bold'>Rating: 3/5</p>
 
                 </div>
-            </div>
+            </div>)}
             {/* Course Videos */}
             <div className="card mt-4">
                 <h5 className="card-header">
                     In this course
                 </h5>
                 <ul className="list-group list-group-flush ">
-                {courseData.map((chapter,index)=>
+                {courseData && courseData.course_chapters.map((chapter,index)=>
                     <li className="list-group-item">{chapter.title}
                     <span className='float-end'>
                         <span className='me-4'>1:30 mins</span>

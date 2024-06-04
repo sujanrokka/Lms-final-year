@@ -58,12 +58,12 @@ if(studentLoginStatus==='true'){
             {errorMsg && <p className='text-danger'>{errorMsg}</p>}
             <form>
             <div className="mb-3">
-                <label for="exampleInputEmail1" className="form-label">Username</label>
+                <label htmlFor="exampleInputEmail1" className="form-label float-start">Username</label>
                 <input type="email" name="email" onChange={handleChange}className="form-control"  />
             
             </div>
             <div className="mb-3">
-                <label for="exampleInputPassword1" className="form-label">Password</label>
+                <label  htmlFor="exampleInputPassword1" className="form-label float-start">Password</label>
                 <input type="password" name="password" onChange={handleChange}className="form-control" id="exampleInputPassword1" />
             </div>
             {/* <div className="mb-3 form-check">
