@@ -16,6 +16,7 @@ function TeacherCourses()
         {
             console.log(response.data);
             setCourseData(response.data);
+           
         });
         }catch(error){
             console.log(error);
@@ -46,7 +47,15 @@ function TeacherCourses()
                         {courseData && courseData.map((course,index)=>
                         
                         <tr>
-                            <td><Link to={'/all-chapters/'+course.id} > {course.title} </Link> </td>
+                            <td><Link to={'/all-chapters/'+course.id} > {course.title} </Link> 
+                            <hr/>
+                            {course.course_rating && 
+                            <span>Rating: {course.course_rating}/5</span>
+                            }
+                            {!course.course_rating && 
+                            <span>Rating: 0 </span>
+                            }
+                            </td>
                             <td><img src={course.featured_img} width="80" className="rounded" alt='{course.title}' /></td>
                             <td><Link to={'/enrolled-students/'+course.id}>{course.total_enrolled_students}</Link></td>
                             <td>

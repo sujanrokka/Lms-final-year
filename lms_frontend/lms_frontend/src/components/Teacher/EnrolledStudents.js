@@ -7,6 +7,7 @@ const baseUrl='http://127.0.0.1:8000/api';
 function EnrolledStudents()
 {
     const [studentData,setStudentData]=useState([]);
+
     const teacherId=localStorage.getItem('teacherId');
     let {course_id}=useParams();
     console.log(teacherId);
@@ -40,18 +41,16 @@ function EnrolledStudents()
                         <th>Name</th>
                         <th>Email</th>
                         <th>Username</th>
-                        <th>Action</th>
+                        <th>Interested Categories</th>
                         </tr>
                     </thead>
                     <tbody>
                         {studentData && studentData.map((row,index)=>
                         <tr>
-                            <td><Link to={'/view-student/'+row.student.id} > {row.student.full_name} </Link> </td>
+                            <td>{row.student.full_name}</td>
                             <td>{row.student.email}</td>
                             <td>{row.student.username}</td>
-                            <td>
-                                <Link class="btn btn-info btn-sm " to={'/view-student/'+row.student.id}> View </Link>
-                            </td>
+                            <td>{row.student.interested_categories}</td>
                         </tr>
                         )}
                     </tbody>
