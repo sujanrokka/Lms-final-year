@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer
 from rest_framework.response import Response
-from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment
+from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating
 from rest_framework import generics
 from rest_framework import permissions
 from django.http import JsonResponse,HttpResponse
@@ -144,6 +144,12 @@ def student_login(request):
         return JsonResponse({'bool': False})
     
     
+
+
+class StudentEnrollCourseList(generics.ListCreateAPIView):
+    queryset =StudentCourseEnrollment.objects.all()
+    serializer_class = StudentCourseEnrollSerializer
+    
 @csrf_exempt
 def fetch_enroll_status(request,student_id,course_id):
     student=Student.objects.get(id=student_id).first()
@@ -154,8 +160,35 @@ def fetch_enroll_status(request,student_id,course_id):
         return JsonResponse({'bool': True})
     else:
         return JsonResponse({'bool': False})
-
-class StudentEnrollCourseList(generics.ListCreateAPIView):
+    
+    
+class EnrolledStudentList(generics.ListAPIView):
     queryset =StudentCourseEnrollment.objects.all()
     serializer_class = StudentCourseEnrollSerializer
     
+    def get_queryset(self):
+        course_id=self.kwargs['course_id']
+        course=Course.objects.get(pk=course_id)
+        return StudentCourseEnrollment.objects.filter(course=course)
+    
+    
+class CourseRatingList(generics.ListCreateAPIView):
+    serializer_class = CourseRatingSerializer
+    
+    def get_queryset(self):
+        course_id=self.kwargs['course_id']
+        student_id=self.kwargs['student_id']
+        course=Course.objects.get(pk=course_id)
+        return CourseRating.objects.filter(course=course)
+
+
+@csrf_exempt
+def fetch_rating_status(request,student_id,course_id):
+    student=Student.objects.get(id=student_id).first()
+    course=Course.objects.get(id=course_id).first()
+    ratingStatus=CourseRating.objects.filter(course=course,student=student).count()
+    
+    if ratingStatus:
+        return JsonResponse({'bool': True})
+    else:
+        return JsonResponse({'bool': False})

@@ -8,15 +8,13 @@ const baseUrl='http://127.0.0.1:8000/api';
 
 function AddChapters()
 {
-    
-  
     const [chapterData,setChapterData]=useState({
         title:'',
         description:'',
         video:'',
         remarks:'' 
     });
-
+const [videoDuration,setvideoDuration]=useState();
     
     const handleChange=(event)=>{
         setChapterData({
@@ -26,9 +24,20 @@ function AddChapters()
     }
     
     const handleFileChange=(event)=>{
-        setChapterData({
-           ...chapterData,
-            [event.target.name]:event.target.files[0]
+           window.URL=window.URL || window.webkitURL
+           var video=document.createElement('video');
+           video.preload='metadata';
+           video.onloadedmetadata = function (){
+            window.URL.revokeObjectURL(video.src)
+            setvideoDuration(video.duration);
+           }
+           video.src=URL.createObjectURL(event.target.files[0]);
+
+           setChapterData({
+               ...chapterData,
+               video:event.target.files[0]
+               
+           })
         });
     }
 
