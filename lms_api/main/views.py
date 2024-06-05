@@ -143,6 +143,18 @@ def student_login(request):
     else:
         return JsonResponse({'bool': False})
     
+    
+@csrf_exempt
+def fetch_enroll_status(request,student_id,course_id):
+    student=Student.objects.get(id=student_id).first()
+    course=Course.objects.get(id=course_id).first()
+    enrollStatus=StudentCourseEnrollment.objects.filter(course=course,student=student).count()
+    
+    if enrollStatus:
+        return JsonResponse({'bool': True})
+    else:
+        return JsonResponse({'bool': False})
+
 class StudentEnrollCourseList(generics.ListCreateAPIView):
     queryset =StudentCourseEnrollment.objects.all()
     serializer_class = StudentCourseEnrollSerializer

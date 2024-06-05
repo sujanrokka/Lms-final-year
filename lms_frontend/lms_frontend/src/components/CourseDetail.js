@@ -17,8 +17,13 @@ function CourseDetail() {
     const [chapterData,setChapterData]=useState([]);
     const [relatedcourseData,setrelatedcourseData]=useState([]);
     const [techListData,settechListData]=useState([]);
+    const [userLoginStatus,setuserLoginStatus]=useState();
+    const [enrollStatus,setenrollStatus]=useState();
     let {course_id} = useParams();
-    console.log(course_id)
+    const studentId=localStorage.getItem('studentId');
+    console.log(course_id);
+
+    //fetch courses when page load
     useEffect(()=>
         {
             try{
@@ -33,14 +38,36 @@ function CourseDetail() {
                 settechListData(response.data.tech_list);
             });
             }catch(error){
-                console.log(error);
-            const studentLoginStatus=localStorage.getItem('studentLoginStatus');
-            if(studentLoginStatus==='true'){
-                window.location.href='/student-dashboard';
+            console.log(error);
             }
-            }
-            },[]);
+         
+           
 
+    //fetch enroll status
+    try{
+        axios.get(baseUrl+'/fetch-enroll-status/'+studentId+'/'+course_id)
+        .then((response)=>
+        {
+            console.log(response);
+             if (response.data.bool==true){
+                setenrollStatus('success');
+             }
+            
+         
+        });
+        }catch(error){
+            console.log(error);
+        }
+        const studentLoginStatus=localStorage.getItem('studentLoginStatus');
+        if(studentLoginStatus==='true'){
+        setuserLoginStatus('success');
+
+        }
+        
+        },[]);
+
+
+        
         const enrollCourse=()=>{
             const studentId=localStorage.getItem('studentId');
             const formData=new FormData();
@@ -55,15 +82,15 @@ function CourseDetail() {
             })
            .then((res)=>{
             if(res.status===200||res.status===201){
-                Swal.fire{{ 
-                    title:'ou have sucessfully enrolled ',
+                Swal.fire({ 
+                    title:'You have Sucessfully enrolled ',
                     toast:'success',
                     timer:3000,
                     position:'top-right',
                     timerProgressBar:true,
                     showConfirmButton:false
-                 }};
-            
+                 });
+                 setenrollStatus('success');
                 }
             });
         }catch(error){
@@ -74,7 +101,6 @@ function CourseDetail() {
     return (
         <div>
         <div className='container mt-3'>
-
            {courseData && ( <div className='row'>
                 <div className='col-4'>
                     <img src={courseData.featured_img} className="img-thumbnail" alt={courseData.title}/>
@@ -93,11 +119,22 @@ function CourseDetail() {
                         <p className='fw-bold'>Duration: 5 hrs 30 minutes</p>
                         <p className='fw-bold'>Total enrolled: 500 students</p>
                         <p className='fw-bold'>Rating: 3/5</p>
+                        { userLoginStatus==='success' && enrollStatus!=='success' &&
                         <p><button type='button'  onClick={enrollCourse} className='btn btn-success'>Enroll in this course</button></p>
-
+                         }
+                         { enrollStatus ==='success' && userLoginStatus==='success' &&
+                        <p><span>You have already enrolled in this course</span></p>
+                         }
+                        { userLoginStatus!=='success' &&
+                        <p><Link to="/user-login">Please Login to enroll</Link></p>
+                        }
+                    
+    
                 </div>
-            </div>)}
+            </div>
+        )}
             {/* Course Videos */}
+            { enrollStatus === 'success' && userLoginStatus =='success' &&
             <div className="card mt-4">
                 <h5 className="card-header">
                     In this course
@@ -132,11 +169,12 @@ function CourseDetail() {
                         </div>
                         { /* video modal end*/}
                     </li>
-
-                )}
-                  
+                )} 
                 </ul>
                 </div>
+            }
+
+
                     <h3 className="pb-1 mb-4 mt-5">Related Courses </h3>
                     <div className="row mb-4">
                     {relatedcourseData.map((rcourse,index)=>
@@ -154,5 +192,6 @@ function CourseDetail() {
         </div>
     );
 }
+
 
 export default CourseDetail;

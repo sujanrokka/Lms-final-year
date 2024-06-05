@@ -47,15 +47,15 @@ function AddChapters()
             }
         })
        .then((res)=>{
-        if(res.status==200||res.status==201){
-            Swal.fire{{ 
+        if(res.status===200||res.status===201){
+            Swal.fire({ 
                 title:'Data has been added',
                 toast:'success',
                 timer:3000,
                 position:'top-right',
                 timerProgressBar:true,
                 showConfirmButton:false
-             }};
+            });
              window.location.reload()
         }
         });
