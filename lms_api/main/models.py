@@ -4,11 +4,12 @@ from django.core import serializers
 #teacher model
 class Teacher(models.Model):
     full_name=models.CharField(max_length=100)
-    detail=models.TextField(null=True)
+    # detail=models.TextField(null=True)
     email=models.CharField(max_length=100)
-    password=models.CharField(max_length=100)
+    password=models.CharField(max_length=100,blank=True,null=True)
     qualification=models.CharField(max_length=100)
     mobile_no=models.CharField(max_length=100)
+    profile_img=models.ImageField(upload_to='teacher_profile_imgs/',null=True)
     skills=models.TextField()
     
     class  Meta:
@@ -17,6 +18,18 @@ class Teacher(models.Model):
     def skill_list(self):
         skill_list=self.skills.split(',')
         return skill_list  
+    
+    def total_teacher_courses(self):
+        total_courses=Course.objects.filter(teacher=self).count()
+        return total_courses
+    
+    def total_teacher_chapters(self):
+        total_chapters=Chapter.objects.filter(course__teacher=self).count()
+        return total_chapters
+    
+    def total_teacher_students(self):
+        total_students=StudentCourseEnrollment.objects.filter(course__teacher=self).count()
+        return total_students
     
     def __str__(self):
          return self.full_name
@@ -78,7 +91,24 @@ class Chapter(models.Model):
     
     class  Meta:
         verbose_name_plural = '4.Chapters'
+    
+    def chapter_duration(self):
+        seconds=0
+        import cv2
+        cap=cv2.VideoCapture(self.video.path)
+        fps=cap.get(cv2.CAP_PROP_FPS)       #open cv2 version2 used "CV_CAP_PROPS_FPS"
+        frame_count=int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        if frame_count:
+            duration=frame_count/fps
+            print('fps=' + str(fps))
+            print('number of frames =' +str(frame_count))
+            print('duration (S) =' +str(duration))
+            minutes=int(duration/60)
+            seconds=duration%60
+            print('duration (m:s) =' +str(minutes) + ":" + str(seconds))
+        return seconds
         
+   
     def __str__(self):
          return self.title
     
@@ -113,7 +143,19 @@ class StudentCourseEnrollment(models.Model):
     def __str__(self):
          return f"{self.course}-{self.student}"
         
-    
+ 
+#student favorite course
+class StudentFavoriteCourse(models.Model): 
+    course=models.ForeignKey(Course,on_delete=models.CASCADE)
+    student=models.ForeignKey(Student,on_delete=models.CASCADE)
+    status=models.BooleanField(default=False)
+    class Meta:
+        verbose_name_plural = '7. Student Favorite Courses'
+
+    def __str__(self):
+         return f"{self.course}-{self.student}"
+         
+     
 #course rating and reviews
 class CourseRating(models.Model):
     course=models.ForeignKey(Course,on_delete=models.CASCADE)

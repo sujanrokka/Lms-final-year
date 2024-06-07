@@ -21,6 +21,7 @@ function CourseDetail() {
     const [enrollStatus,setenrollStatus]=useState();
     const [ratingStatus,setratingStatus]=useState();
     const [avgRating,setAvgRating]=useState(0);
+    const [favoriteStatus,setfavoriteStatus]=useState();
     let {course_id} = useParams();
     const studentId=localStorage.getItem('studentId');
     console.log(course_id);
@@ -57,15 +58,31 @@ function CourseDetail() {
              if (response.data.bool==true){
                 setenrollStatus('success');
              }
-            
-         
         });
         }catch(error){
             console.log(error);
         }
         //end enroll status
+   //fetch favorite status
+   try{
+    axios.get(baseUrl+'/fetch-favorite-status/'+studentId+'/'+course_id)
+    .then((response)=>
+    {
+        console.log(response);
+         if (response.data.bool==true){
+            setfavoriteStatus('success');
+         }else{
+            setfavoriteStatus('');
+         }
+    });
+    }catch(error){
+        console.log(error);
+    }
+    //end favorite status
 
-        //fetch rating status
+
+
+    //fetch rating status
         try{
             axios.get(baseUrl+'/fetch-rating-status/'+studentId+'/'+course_id)
             .then((response)=>
@@ -160,6 +177,36 @@ function CourseDetail() {
         console.log(error);
        }
     };
+
+    const markAsFavorite=()=>{
+        const _formData=new FormData();
+        _formData.append('course',course_id);
+        _formData.append('student',studentId);
+        _formData.append('status',true);
+        try{
+            axios.post(baseUrl+'/student-add-favorite-course/',_formData,{
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                }
+            })
+           .then((res)=>{
+            if(res.status===200||res.status===201){
+                Swal.fire({ 
+                    title:'This course has been added to wish list',
+                    icon:"success",
+                    toast:true,
+                    timer:10000,
+                    position:'top-right',
+                    timerProgressBar:true,
+                    showConfirmButton:false
+                });
+                setfavoriteStatus('success');
+            }
+        });
+        }catch(error){
+            console.log(error);
+        }    
+    }
     return (
         <div>
         <div className='container mt-3'>
@@ -222,14 +269,22 @@ function CourseDetail() {
                         </div>
                         </>
                         }
-                        
                         </p>
+                        { enrollStatus ==='success' && userLoginStatus==='success' &&
+                        <p><span>You have already enrolled in this course</span></p>
+                         }
                         { userLoginStatus==='success' && enrollStatus!=='success' &&
                         <p><button type='button'  onClick={enrollCourse} className='btn btn-success'>Enroll in this course</button></p>
                          }
-                         { enrollStatus ==='success' && userLoginStatus==='success' &&
-                        <p><span>You have already enrolled in this course</span></p>
+        
+                        { userLoginStatus==='success'  && favoriteStatus !== "success" &&
+                        <p><button type='button' title="Add to favorite course list" onClick={markAsFavorite} className='btn btn-outline-danger'><i class="bi bi-heart-fill"></i></button></p>
                          }
+                         
+                        { userLoginStatus==='success'  && favoriteStatus === "success" &&
+                        <p><button type='button' title="Add to favorite course list" onClick={removeFavorite} className='btn btn-outline-danger'><i class="bi bi-heart-fill"></i></button></p>
+                         }
+                         
                         { userLoginStatus!=='success' &&
                         <p><Link to="/user-login">Please Login to enroll</Link></p>
                         }
@@ -276,8 +331,6 @@ function CourseDetail() {
                 </ul>
                 </div>
             }
-
-
                     <h3 className="pb-1 mb-4 mt-5">Related Courses </h3>
                     <div className="row mb-4">
                     {relatedcourseData.map((rcourse,index)=>
@@ -295,6 +348,5 @@ function CourseDetail() {
         </div>
     );
 }
-
 
 export default CourseDetail;

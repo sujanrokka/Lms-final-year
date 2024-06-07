@@ -1,8 +1,29 @@
 import {Link} from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import {useState,useEffect} from 'react';
+import axios from 'axios';
+const baseUrl='http://127.0.0.1:8000/api';
+
 
 function MyCourses(){
+    const [courseData,setCourseData]=useState([]);
+    const studentId=localStorage.getItem('studentId');
+
+    useEffect(()=>
+        {
+            try{
+            axios.get(baseUrl+'/fetch-all-enrolled-courses/'+studentId)
+            .then((response)=>
+            {
+                console.log(response.data);
+                setCourseData(response.data);
+            });
+            }catch(error){
+                console.log(error);
+            }
+            },[]);
+
     return(
         <div className='container mt-4'>
             <div className='row'>
@@ -16,19 +37,17 @@ function MyCourses(){
             <table className='table table-bordered'>
                 <thead>
                     <tr>
-                    <th>Name</th>
-                    <th>Created By</th>
-                    <th>Action</th>
+                        <th>Name</th>
+                        <th>Created By</th>
                     </tr>
                 </thead>
                 <tbody>
+                {courseData && courseData.map((row,index)=>
                     <tr>
-                        <td>Django development</td>
-                        <td><Link to="/">Code with harry</Link></td>
-                        <td>
-                            <button className='btn btn-danger btn-sm active'>Delete</button>
-                        </td>
+                        <td><Link to={`/detail/`+row.course.id}> {row.course.title}</Link></td>
+                        <td><Link to={`/teacher-detail/`+row.course.teacher.id}>{row.course.teacher.full_name}</Link></td>
                     </tr>
+                )}
                 </tbody>
             </table>
             
@@ -41,3 +60,7 @@ function MyCourses(){
 }
 
 export default MyCourses;
+
+
+
+

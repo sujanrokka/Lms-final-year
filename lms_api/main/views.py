@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer
+from django.db.models import Q
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer
 from rest_framework.response import Response
-from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating
+from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse
 from rest_framework import generics
 from rest_framework import permissions
 from django.http import JsonResponse,HttpResponse
@@ -29,7 +30,10 @@ class TeacherDetailList(generics.RetrieveUpdateDestroyAPIView):
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
     # permission_classes=[permissions.IsAuthenticated]
-    
+
+class TeacherDashboard(generics.RetrieveAPIView):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherDashboardSerializer    
 
 @csrf_exempt
 def teacher_login(request):
@@ -73,6 +77,18 @@ class CourseList(generics.ListCreateAPIView):
             teacher=self.request.GET['teacher']
             teacher=Teacher.objects.filter(id=teacher).first()
             qs=Course.objects.filter(techs_icontains=skill_name,teacher=teacher)
+        return qs
+        
+        if 'studentId' in self.kwargs:
+            student_id=self.kwargs['studentId']
+            student=Student.objects.get(pk=student_id)
+            print(student.interested_categories)
+            queries=[Q(techs__iendswith=value) for value in student.interested_categories]
+            query=queries.pop()
+            for item in queries:
+                query |= item
+            qs=Course.objects.filter(query)
+            return qs
         return qs
 
 
@@ -160,7 +176,34 @@ def fetch_enroll_status(request,student_id,course_id):
         return JsonResponse({'bool': True})
     else:
         return JsonResponse({'bool': False})
+
+class StudentFavoriteCourseList(generics.ListCreateAPIView):
+    queryset =StudentFavoriteCourse.objects.all()
+    serializer_class = StudentFavoriteCourseSerializer
+     
+
+def fetch_favorite_status(request,student_id,course_id):
+    student=Student.objects.get(id=student_id).first()
+    course=Course.objects.get(id=course_id).first()
+    favoriteStatus=StudentFavoriteCourse.objects.filter(course=course,student=student).first()
     
+    if favoriteStatus:
+        return JsonResponse({'bool': True})
+    else:
+        return JsonResponse({'bool': False})
+
+def remove_favorite_course(request,course_id,student_id):
+    student=Student.objects.get(id=student_id).first()
+    course=Course.objects.get(id=course_id).first()
+    favoriteStatus=StudentFavoriteCourse.objects.filter(course=course,student=student).delete()
+    
+    if favoriteStatus:
+        return JsonResponse({'bool': True})
+    else:
+        return JsonResponse({'bool': False})
+    
+    
+       
     
 class EnrolledStudentList(generics.ListAPIView):
     queryset =StudentCourseEnrollment.objects.all()
@@ -175,7 +218,14 @@ class EnrolledStudentList(generics.ListAPIView):
             teacher_id=self.kwargs['teacher_id']
             teacher=Teacher.objects.get(pk=course_id)
             return StudentCourseEnrollment.objects.filter(course__teacher=teacher).distinct()
-    
+        
+        elif 'student_id' in self.kwargs:
+            student_id=self.kwargs['student_id']
+            student=Student.objects.get(pk=student_id)
+            return StudentCourseEnrollment.objects.filter(student=student).distinct()
+        
+       
+        
     
 class CourseRatingList(generics.ListCreateAPIView):
     serializer_class = CourseRatingSerializer
@@ -197,3 +247,19 @@ def fetch_rating_status(request,student_id,course_id):
         return JsonResponse({'bool': True})
     else:
         return JsonResponse({'bool': False})
+    
+
+@csrf_exempt
+def teacher_change_password(request,teacher_id):
+    password = request.POST.get('password')
+    try:
+        teacherData = Teacher.objects.get(id=teacher_id)
+    
+    except Teacher.DoesNotExist:
+        teacherData=None
+    
+    if teacherData:
+        Teacher.objects.filter(id=teacher_id).update(password=password)
+        return JsonResponse({'bool':True})
+    else:
+        return JsonResponse({'bool':False})
