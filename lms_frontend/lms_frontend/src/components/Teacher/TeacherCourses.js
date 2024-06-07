@@ -12,7 +12,8 @@ function TeacherCourses()
     useEffect(()=>
     {
         try{
-        axios.get(baseUrl+'/teacher-courses/'+teacherId+'/').then((response)=>
+        axios.get(baseUrl+'/teacher-courses/'+teacherId+'/')
+        .then((response)=>
         {
             console.log(response.data);
             setCourseData(response.data);
@@ -21,7 +22,7 @@ function TeacherCourses()
         }catch(error){
             console.log(error);
         }
-        },[teacherId]);
+        },[]);
         console.log(courseData)
     return (
       
