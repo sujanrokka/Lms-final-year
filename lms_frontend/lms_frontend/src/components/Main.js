@@ -11,8 +11,10 @@ import Login from './User/Login';
 import Logout from './User/StudentLogout';
 import Register from './User/Register';
 import MyCourses from './User/MyCourses';
-import FavouriteCourses from './User/FavouriteCourses';
+import FavoriteCourses from './User/FavoriteCourses';
 import RecommendedCourses from './User/RecommendedCourses';
+import StudentAssignments from './User/StudentAssignments';
+
 import ProfileSetting from './User/ProfileSetting';
 import ChangePassword from './User/ChangePassword';
 
@@ -30,6 +32,8 @@ import AddChapters from './Teacher/AddChapters';
 import AllChapters from './Teacher/CourseChapters';
 import EditChapter from './Teacher/EditChapter';
 import UserList from './Teacher/UserList';
+import AddAssignment from './Teacher/AddAssignment';
+import ShowAssignment from './Teacher/ShowAssignment';
 import TeacherProfileSetting from './Teacher/TeacherProfileSetting';
 import TeacherChangePassword from './Teacher/TeacherChangePassword';
 
@@ -48,6 +52,7 @@ import { Routes, Route } from 'react-router-dom';
 
 
 
+
 function Main() {
     return (
       <div className="App">
@@ -61,12 +66,12 @@ function Main() {
           <Route path="/user-register" element={<Register />} />
           <Route path="/user-dashboard" element={<Dashboard />} />
           <Route path="/my-courses" element={<MyCourses />} />
-          <Route path="/favourite-courses" element={<FavouriteCourses />} />
+          <Route path="/favorite-courses" element={<FavoriteCourses />} />
           <Route path="/recommended-courses" element={<RecommendedCourses />} />
           <Route path="/profile-setting" element={<ProfileSetting />} />
           <Route path="/change-password" element={<ChangePassword />} />
           
-          
+        
           <Route path="/teacher-login" element={<TeacherLogin />} />
           <Route path="/teacher-logout" element={<TeacherLogout />} />
           <Route path="/teacher-register" element={<TeacherRegister />} />
@@ -77,9 +82,13 @@ function Main() {
           <Route path="/edit-course/:course_id" element={<EditCourse />} />
           <Route path="/add-chapter/:course_id" element={<AddChapters />} />
           <Route path="/teacher-users" element={<UserList />} />
+          <Route path="/add-assignment/:student_id/:teacher_id" element={<AddAssignment />} />
+          <Route path="/show-assignment/:student_id/:teacher_id" element={<ShowAssignment />} />
+          <Route path="/my-assignments/" element={<StudentAssignments />} />
           <Route path="/teacher-profile-setting" element={<TeacherProfileSetting />} />
           <Route path="/teacher-change-password" element={<TeacherChangePassword />} />
           <Route path="/teacher-detail/:teacher_id" element={<TeacherDetail />} />
+
           <Route path="/all-courses" element={<AllCourses />} />
           <Route path="/all-chapters/:course_id" element={<AllChapters />} />
           <Route path="/edit-chapter/:chapter_id" element={<EditChapter />} />

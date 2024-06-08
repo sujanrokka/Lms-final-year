@@ -163,9 +163,24 @@ class CourseRating(models.Model):
     rating=models.PositiveBigIntegerField(default=0)
     reviews=models.TextField(null=True)
     review_time=models.DateTimeField(auto_now_add=True)
+    class Meta:
+        verbose_name_plural = '8. Course Rating'
     
     def __str__(self):
          return f"{self.course}-{self.student}-{self.rating}"
         
+
+class StudentAssignment(models.Model):
+    student=models.ForeignKey(Student,on_delete=models.CASCADE,null=True)
+    teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE,null=True)
+    title=models.CharField(max_length=200)
+    detail=models.TextField(null=True)
+    add_time=models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name_plural = '9. Student Assignment'
+    
+    def __str__(self):
+         return f"{self.title}"
     
     

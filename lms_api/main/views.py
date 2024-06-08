@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.db.models import Q
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer
 from rest_framework.response import Response
-from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse
+from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse,StudentAssignment
 from rest_framework import generics
 from rest_framework import permissions
 from django.http import JsonResponse,HttpResponse
@@ -180,6 +180,12 @@ def fetch_enroll_status(request,student_id,course_id):
 class StudentFavoriteCourseList(generics.ListCreateAPIView):
     queryset =StudentFavoriteCourse.objects.all()
     serializer_class = StudentFavoriteCourseSerializer
+    
+    def get_queryset(self):
+        if 'student_id' in self.kwargs:
+            student_id=self.kwargs['student_id']
+            student=Student.objects.get(pk=student_id)
+            return StudentFavoriteCourse.objects.filter(student=student).distinct()
      
 
 def fetch_favorite_status(request,student_id,course_id):
@@ -263,3 +269,25 @@ def teacher_change_password(request,teacher_id):
         return JsonResponse({'bool':True})
     else:
         return JsonResponse({'bool':False})
+    
+    
+    
+class AssignmentList(generics.ListCreateAPIView):
+    queryset = StudentAssignment.objects.all()
+    serializer_class = StudentAssignmentSerializer
+    
+    def get_queryset(self):
+        student_id=self.kwargs['student_id']
+        teacher_id=self.kwargs['teacher_id']
+        student=Student.objects.get(pk=student_id)
+        teacher=Teacher.objects.get(pk=teacher_id)
+        return StudentAssignment.objects.filter(student=student,teacher=teacher)
+    
+class MyAssignmentList(generics.ListCreateAPIView):
+    queryset = StudentAssignment.objects.all()
+    serializer_class = StudentAssignmentSerializer
+    
+    def get_queryset(self):
+        student_id=self.kwargs['student_id']
+        student=Student.objects.get(pk=student_id)
+        return StudentAssignment.objects.filter(student=student)
