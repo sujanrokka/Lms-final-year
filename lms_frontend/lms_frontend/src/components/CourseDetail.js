@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import AddChapters from './Teacher/AddChapters';
 const siteUrl='http://127.0.0.1:8000/';
 const baseUrl='http://127.0.0.1:8000/api';
 
@@ -207,12 +208,19 @@ function CourseDetail() {
             console.log(error);
         }    
     }
+    const removeFavorite =()=>
+    {
+
+    }
     return (
         <div>
         <div className='container mt-3'>
            {courseData && ( <div className='row'>
                 <div className='col-4'>
-                    <img src={courseData.featured_img} className="img-thumbnail" alt={courseData.title}/>
+                  <div className='row'>
+                  <img src={courseData.featured_img} className="img-thumbnail" alt={courseData.title}/>
+                    <Link className='btn btn-primary' to={`/add-chapter/${courseData.id}`}>Add Chapters</Link>  
+                  </div>
                 </div>
                 <div className='col-8'>
                     <h3>{courseData.title}</h3>
@@ -231,7 +239,7 @@ function CourseDetail() {
                         { userLoginStatus==='success' && enrollStatus==='success' && 
                         <>
                             {ratingStatus !=='success' &&
-                                <button className='btn btn-succcess btn-sm ms-2' data-bs-toggle="modal" data-bs-target="#ratingModal">Rate</button>
+                                <button className='btn btn-success btn-sm ms-2' data-bs-toggle="modal" data-bs-target="#ratingModal">Rate</button>
                             }
                             { ratingStatus ==='success' &&
                                 <small className='badge bg-info text-light ms-2'>You already rated this course</small>
@@ -292,7 +300,7 @@ function CourseDetail() {
             </div>
         )}
             {/* Course Videos */}
-            { enrollStatus === 'success' && userLoginStatus =='success' &&
+            { enrollStatus === 'success' && userLoginStatus ==='success' &&
             <div className="card mt-4">
                 <h5 className="card-header">
                     In this course

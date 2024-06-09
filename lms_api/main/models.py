@@ -124,8 +124,29 @@ class Student(models.Model):
     
     class  Meta:
         verbose_name_plural = '5.Students'
+     
+     #total enrolled courses
+    def enrolled_courses(self):
+        enrolled_courses=StudentCourseEnrollment.objects.filter(student=self).count()
+        return enrolled_courses  
+    
+    #total favorite courses
+    def favorite_courses(self):
+        favorite_courses=StudentFavoriteCourse.objects.filter(student=self).count()
+        return favorite_courses
+    
+    #completed assignmnets
+    def complete_assignments(self):
+        complete_assignments=StudentAssignment.objects.filter(student=self,student_status=True).count()
+        return complete_assignments
+    
+    #pending assignmnets
+    def pending_assignments(self):
+        pending_assignments=StudentAssignment.objects.filter(student=self,student_status=False).count()
+        return pending_assignments
         
     
+
     def __str__(self):
          return self.full_name
     
@@ -176,7 +197,7 @@ class StudentAssignment(models.Model):
     title=models.CharField(max_length=200)
     detail=models.TextField(null=True)
     add_time=models.DateTimeField(auto_now_add=True)
-    
+    student_status=models.BooleanField(default=False,null=True)
     class Meta:
         verbose_name_plural = '9. Student Assignment'
     

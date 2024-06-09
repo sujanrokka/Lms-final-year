@@ -13,7 +13,7 @@ function UserList()
     useEffect(()=>
     {
         try{
-        axios.get(baseUrl+'/fetch-all--enrolled-students/'+teacherId)
+        axios.get(baseUrl+'/fetch-all-enrolled-students/'+teacherId)
         .then((response)=>
         {
             console.log(response.data);

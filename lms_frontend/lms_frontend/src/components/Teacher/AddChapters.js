@@ -176,7 +176,7 @@ function AddChapters() {
         formData.append('remarks', chapterData.remarks);
 
         try {
-            const response = await axios.post(`${baseUrl}/course-chapters/`, formData, {
+            const response = await axios.post(`${baseUrl}/course-chapters/${course_id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.db.models import Q
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer
 from rest_framework.response import Response
 from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse,StudentAssignment
 from rest_framework import generics
@@ -70,14 +70,15 @@ class CourseList(generics.ListCreateAPIView):
         
         if 'category' in self.request.GET:
             category=self.request.GET['category']
-            qs=Course.objects.filter(techs_icontains=category)
+            qs=Course.objects.filter(techs__icontains=category)
         
         if 'skill_name' in self.request.GET  and 'teacher' in self.request.GET:
             skill_name=self.request.GET['skill_name']
             teacher=self.request.GET['teacher']
             teacher=Teacher.objects.filter(id=teacher).first()
-            qs=Course.objects.filter(techs_icontains=skill_name,teacher=teacher)
-        return qs
+            qs=Course.objects.filter(techs__icontains=skill_name,teacher=teacher)
+            return qs
+        
         
         if 'studentId' in self.kwargs:
             student_id=self.kwargs['studentId']
@@ -90,9 +91,8 @@ class CourseList(generics.ListCreateAPIView):
             qs=Course.objects.filter(query)
             return qs
         return qs
-
-
-#yesma check garna baki
+            
+            
 class CourseDetailView(generics.RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -143,6 +143,12 @@ class StudentList(generics.ListCreateAPIView):
     serializer_class = StudentSerializer
     # permission_classes=[permissions.IsAuthenticated]
     
+
+class StudentDashboard(generics.RetrieveAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentDashboardSerializer 
+    
+    
     
 @csrf_exempt
 def student_login(request):
@@ -168,8 +174,8 @@ class StudentEnrollCourseList(generics.ListCreateAPIView):
     
 @csrf_exempt
 def fetch_enroll_status(request,student_id,course_id):
-    student=Student.objects.get(id=student_id).first()
-    course=Course.objects.get(id=course_id).first()
+    student=Student.objects.get(id=student_id)#removed.first()
+    course=Course.objects.get(id=course_id)#removed.first()
     enrollStatus=StudentCourseEnrollment.objects.filter(course=course,student=student).count()
     
     if enrollStatus:
@@ -189,8 +195,8 @@ class StudentFavoriteCourseList(generics.ListCreateAPIView):
      
 
 def fetch_favorite_status(request,student_id,course_id):
-    student=Student.objects.get(id=student_id).first()
-    course=Course.objects.get(id=course_id).first()
+    student=Student.objects.get(id=student_id)
+    course=Course.objects.get(id=course_id)
     favoriteStatus=StudentFavoriteCourse.objects.filter(course=course,student=student).first()
     
     if favoriteStatus:
@@ -199,8 +205,8 @@ def fetch_favorite_status(request,student_id,course_id):
         return JsonResponse({'bool': False})
 
 def remove_favorite_course(request,course_id,student_id):
-    student=Student.objects.get(id=student_id).first()
-    course=Course.objects.get(id=course_id).first()
+    student=Student.objects.get(id=student_id)
+    course=Course.objects.get(id=course_id)
     favoriteStatus=StudentFavoriteCourse.objects.filter(course=course,student=student).delete()
     
     if favoriteStatus:
@@ -222,7 +228,7 @@ class EnrolledStudentList(generics.ListAPIView):
             return StudentCourseEnrollment.objects.filter(course=course)
         elif 'teacher_id' in self.kwargs:
             teacher_id=self.kwargs['teacher_id']
-            teacher=Teacher.objects.get(pk=course_id)
+            teacher=Teacher.objects.get(pk=teacher_id)
             return StudentCourseEnrollment.objects.filter(course__teacher=teacher).distinct()
         
         elif 'student_id' in self.kwargs:
@@ -245,8 +251,8 @@ class CourseRatingList(generics.ListCreateAPIView):
 
 @csrf_exempt
 def fetch_rating_status(request,student_id,course_id):
-    student=Student.objects.get(id=student_id).first()
-    course=Course.objects.get(id=course_id).first()
+    student=Student.objects.get(id=student_id)
+    course=Course.objects.get(id=course_id)
     ratingStatus=CourseRating.objects.filter(course=course,student=student).count()
     
     if ratingStatus:
@@ -291,3 +297,9 @@ class MyAssignmentList(generics.ListCreateAPIView):
         student_id=self.kwargs['student_id']
         student=Student.objects.get(pk=student_id)
         return StudentAssignment.objects.filter(student=student)
+    
+class UpdateAssignment(generics.RetrieveUpdateDestroyAPIView):
+    queryset = StudentAssignment.objects.all()
+    serializer_class = StudentAssignmentSerializer
+    
+    

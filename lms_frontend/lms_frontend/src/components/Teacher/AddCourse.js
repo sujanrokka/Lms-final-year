@@ -10,7 +10,7 @@ function AddCourse()
         category:'',
         title:'',
         description:'',
-        f_img:'',
+        f_img:'', 
         techs:'' 
     });
 
