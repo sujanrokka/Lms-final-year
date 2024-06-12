@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.db.models import Q
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer
 from rest_framework.response import Response
-from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse,StudentAssignment,Notification
+from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse,StudentAssignment,Notification,Quiz,QuizQuestions,CourseQuiz
 from rest_framework import generics
 from rest_framework import permissions
 from django.http import JsonResponse,HttpResponse
@@ -135,6 +135,13 @@ class CourseChapterList(generics.ListAPIView):
 class ChapterDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Chapter.objects.all()
     serializer_class = ChapterSerializer
+    
+    def get_serializer_context(self):
+        context= super().get_serializer_context()
+        context['chapter_duration']=self.chapter_duration
+        print('context----------------------')
+        print(context)
+        return context
     
 
 #StudentData
@@ -330,3 +337,27 @@ class NotificationList(generics.ListCreateAPIView):
         student_id=self.kwargs['student_id']
         student=Student.objects.get(pk=student_id)
         return Notification.objects.filter(student=student,notif_for='student',notif_subject="assignment",notifiread_status=False)
+    
+    
+
+class QuizList(generics.ListCreateAPIView):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizSerializer
+    
+#specific teacher quiz
+class TeacherQuizList(generics.ListCreateAPIView):
+    serializer_class = QuizSerializer
+    
+    def get_queryset(self):
+        teacher_id=self.kwargs['teacher_id']
+        teacher=Teacher.objects.get(pk=teacher_id)
+        return Quiz.objects.filter(teacher=teacher)
+    
+    
+class TeacherQuizDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizSerializer
+    
+class QuizDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizSerializer

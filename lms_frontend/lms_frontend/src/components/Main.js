@@ -44,6 +44,12 @@ import PopularTeachers from './PopularTeachers';
 import CategoryCourses from './CategoryCourses';
 import TeacherSkillCourses from './TeacherSkillCourses';
 
+//Quiz
+import AddQuiz from './Teacher/AddQuiz';
+import AllQuiz from './Teacher/AllQuiz';
+import EditQuiz from './Teacher/EditQuiz';
+
+
 
 
 import About from './About';
@@ -85,6 +91,14 @@ function Main() {
           <Route path="/add-assignment/:student_id/:teacher_id" element={<AddAssignment />} />
           <Route path="/show-assignment/:student_id/:teacher_id" element={<ShowAssignment />} />
           <Route path="/my-assignments/" element={<StudentAssignments />} />
+          <Route path="/add-quiz" element={<AddQuiz />} />
+          <Route path="/quiz" element={<AllQuiz />} />
+          <Route path="/add-quiz" element={<AddQuiz />} />
+          <Route path="/edit-quiz/:quiz_id" element={<EditQuiz />} />
+
+
+
+
           <Route path="/teacher-profile-setting" element={<TeacherProfileSetting />} />
           <Route path="/teacher-change-password" element={<TeacherChangePassword />} />
           <Route path="/teacher-detail/:teacher_id" element={<TeacherDetail />} />
