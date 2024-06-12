@@ -145,7 +145,6 @@ class Student(models.Model):
         pending_assignments=StudentAssignment.objects.filter(student=self,student_status=False).count()
         return pending_assignments
         
-    
 
     def __str__(self):
          return self.full_name
@@ -205,3 +204,14 @@ class StudentAssignment(models.Model):
          return f"{self.title}"
     
     
+#notification model
+class Notification(models.Model):
+    teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE,null=True)
+    student=models.ForeignKey(Student,on_delete=models.CASCADE,null=True)
+    notif_subject=models.CharField(max_length=200,verbose_name='Notification Subject',null=True)
+    notif_for=models.CharField(max_length=200,verbose_name='Notification for',null=True)
+    notif_created_time=models.DateTimeField(auto_now_add=True)
+    notifiread_status=models.BooleanField(default=False,verbose_name='Notification status',null=True)
+    
+    class Meta:
+        verbose_name_plural = '10. Notification'

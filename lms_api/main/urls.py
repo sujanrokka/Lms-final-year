@@ -36,6 +36,8 @@ urlpatterns = [
     path('student/',views.StudentList.as_view()), 
     path('student-login/',views.student_login),
     path('student/dashboard/<int:pk>/',views.StudentDashboard.as_view()),
+    path('student/change-password/<int:student_id>/',views.student_change_password),
+    
     
     
     path('student-enroll-course/',views.StudentEnrollCourseList.as_view()),
@@ -53,6 +55,12 @@ urlpatterns = [
     path('student-assignment/<int:teacher_id>/<int:student_id>',views.AssignmentList.as_view()),
     path('my-assignments/<int:student_id>',views.MyAssignmentList.as_view()),
     path('update-assignment/<int:pk>',views.UpdateAssignment.as_view()),
+    
+    path('student/fetch-all-notifications/<int:student_id>/',views.NotificationList.as_view()),
+    path('save-notification/',views.NotificationList.as_view()),
+    
+    
+    
     
     
    

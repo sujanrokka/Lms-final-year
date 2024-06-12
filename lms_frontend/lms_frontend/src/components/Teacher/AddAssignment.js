@@ -52,14 +52,32 @@ function AddAssignment() {
             timerProgressBar: true,
             showConfirmButton: false
         });
+   
+    //save notifications
+    const notifData=new FormData();
+    notifData.append('teacher',teacher_id);
+    notifData.append('notif_subject','assignment');
+    notifData.append('notif_for','student');
+    notifData.append('student','student_id');
+
+    axios.post(baseUrl+'/save-notification/',notifData,{
+        headers:{
+            'Content-Type':'multipart/form-data'
+        }
+    })
+        .then((res)=>{
+            console.log('Notification Added');
+        })
+        //end notification
         window.location.reload();
     }
-});
-}catch(error) {
-console.error(error);
-    
-}   
-    };
+    });
+}catch(error){
+    console.log(error);
+
+}
+};
+
 
     return (
         <div className="container mt-4">
@@ -89,5 +107,6 @@ console.error(error);
         </div>
     );
 }
+
 
 export default AddAssignment;

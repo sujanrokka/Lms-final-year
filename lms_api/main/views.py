@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.db.models import Q
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer
 from rest_framework.response import Response
-from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse,StudentAssignment
+from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse,StudentAssignment,Notification
 from rest_framework import generics
 from rest_framework import permissions
 from django.http import JsonResponse,HttpResponse
@@ -296,6 +296,8 @@ class MyAssignmentList(generics.ListCreateAPIView):
     def get_queryset(self):
         student_id=self.kwargs['student_id']
         student=Student.objects.get(pk=student_id)
+        #update notification
+        Notification.objects.filter(student=student,notif_for='student',notif_subject='assignment').update(notifiread_status=True )
         return StudentAssignment.objects.filter(student=student)
     
 class UpdateAssignment(generics.RetrieveUpdateDestroyAPIView):
@@ -303,3 +305,28 @@ class UpdateAssignment(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StudentAssignmentSerializer
     
     
+
+@csrf_exempt
+def student_change_password(request,student_id):
+    password = request.POST.get('password')
+    try:
+        studentData = Student.objects.get(id=student_id)
+    
+    except Student.DoesNotExist:
+        studentData=None
+    
+    if studentData:
+        Student.objects.filter(id=student_id).update(password=password)
+        return JsonResponse({'bool':True})
+    else:
+        return JsonResponse({'bool':False})
+    
+    
+class NotificationList(generics.ListCreateAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+    
+    def get_queryset(self):
+        student_id=self.kwargs['student_id']
+        student=Student.objects.get(pk=student_id)
+        return Notification.objects.filter(student=student,notif_for='student',notif_subject="assignment",notifiread_status=False)

@@ -69,7 +69,7 @@ function TeacherChangePassword()
         <div class="mb-3 row">
             <label for="inputPassword" className="col-sm-2 col-form-label">New Password</label>
             <div className="col-sm-10">
-            <input type="text" name='password'  value={teacherData.password} onChange={handleChange} className="form-control" id="inputPassword"/>
+            <input type="text" name='password' onChange={handleChange} className="form-control" id="inputPassword"/>
             </div>
         </div>
         <hr />

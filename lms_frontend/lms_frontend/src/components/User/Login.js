@@ -27,7 +27,7 @@ function Login()
                 if(res.data.bool===true){
                     localStorage.setItem('studentLoginStatus',true);
                     localStorage.setItem('studentId',res.data.student_id);
-                    window.location.href='/student-dashboard';
+                    window.location.href='/user-dashboard';
 
         }
         else{
@@ -40,7 +40,7 @@ function Login()
 }
 const studentLoginStatus=localStorage.getItem('studentLoginStatus');
 if(studentLoginStatus==='true'){
-    window.location.href='/student-dashboard';
+    window.location.href='/user-dashboard';
 }
     useEffect(()=>{
         document.title='StudentLogin'
@@ -58,7 +58,7 @@ if(studentLoginStatus==='true'){
             {errorMsg && <p className='text-danger'>{errorMsg}</p>}
             <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label float-start">Username</label>
-                <input type="email" value={studentLoginData.password} name="email" onChange={handleChange}className="form-control"  />
+                <input type="email" value={studentLoginData.username} name="email" onChange={handleChange}className="form-control"  />
             
             </div>
             <div className="mb-3">
