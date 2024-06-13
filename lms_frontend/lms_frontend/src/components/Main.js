@@ -48,6 +48,12 @@ import TeacherSkillCourses from './TeacherSkillCourses';
 import AddQuiz from './Teacher/AddQuiz';
 import AllQuiz from './Teacher/AllQuiz';
 import EditQuiz from './Teacher/EditQuiz';
+import AddQuizQuestion from './Teacher/AddQuizQuestion';
+import QuizQuestions from './Teacher/QuizQuestions';
+import AssignQuiz from './Teacher/AssignQuiz';
+
+
+
 
 
 
@@ -55,6 +61,7 @@ import EditQuiz from './Teacher/EditQuiz';
 import About from './About';
 import Footer from './Footer';
 import { Routes, Route } from 'react-router-dom';
+import AssignQuiz from './Teacher/AssignQuiz';
 
 
 
@@ -91,10 +98,17 @@ function Main() {
           <Route path="/add-assignment/:student_id/:teacher_id" element={<AddAssignment />} />
           <Route path="/show-assignment/:student_id/:teacher_id" element={<ShowAssignment />} />
           <Route path="/my-assignments/" element={<StudentAssignments />} />
+
           <Route path="/add-quiz" element={<AddQuiz />} />
           <Route path="/quiz" element={<AllQuiz />} />
           <Route path="/add-quiz" element={<AddQuiz />} />
           <Route path="/edit-quiz/:quiz_id" element={<EditQuiz />} />
+          <Route path="/all-questions/:quiz_id" element={<QuizQuestions />} />
+          <Route path="/all-quiz-question/:quiz_id" element={<AddQuizQuestion />} />
+          <Route path="/assign-quiz/:course_id" element={<AssignQuiz />} />
+
+
+
 
 
 

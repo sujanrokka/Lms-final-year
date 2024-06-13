@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const baseUrl = 'http://127.0.0.1:8000/api';
 
-function AddQuizQuestion() {
+function QuizQuestions() {
     const [questionData, setquestionData] = useState({
         quiz: '',
         question: '',
@@ -111,4 +111,4 @@ function AddQuizQuestion() {
     );
 }
 
-export default AddQuizQuestion;
+export default QuizQuestions;

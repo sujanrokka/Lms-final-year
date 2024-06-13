@@ -107,7 +107,7 @@ function CourseDetail() {
         },[]);
 
 
-        
+        //enroll in this course
         const enrollCourse=()=>{
             const studentId=localStorage.getItem('studentId');
             const formData=new FormData();

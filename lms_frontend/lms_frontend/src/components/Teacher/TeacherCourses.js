@@ -48,7 +48,7 @@ function TeacherCourses()
                         {courseData && courseData.map((course,index)=>
                         
                         <tr>
-                            <td><Link to={'/all-chapters/'+course.id} > {course.title} </Link> 
+                            <td><Link to={`/all-chapters/`+course.id} > {course.title} </Link> 
                             <hr/>
                             {course.course_rating && 
                             <span>Rating: {course.course_rating}/5</span>
@@ -58,10 +58,11 @@ function TeacherCourses()
                             }
                             </td>
                             <td><img src={course.featured_img} width="80" className="rounded" alt='{course.title}' /></td>
-                            <td><Link to={'/enrolled-students/'+course.id}>{course.total_enrolled_students}</Link></td>
+                            <td><Link to={`/enrolled-students/`+course.id}>{course.total_enrolled_students}</Link></td>
                             <td>
-                                <Link class="btn btn-info btn-sm " to={'/edit-course/'+course.id}>Edit</Link>
-                                <Link class="btn btn-success btn-sm  ms-3" to={'/add-chapter/'+course.id}>Add Chapter</Link>
+                                <Link class="btn btn-info btn-sm " to={`/edit-course/`+course.id}>Edit</Link>
+                                <Link class="btn btn-success btn-sm  ms-3" to={`/add-chapter/`+course.id}>Add Chapter</Link>
+                                <Link class="btn btn-warning btn-sm  ms-3" to={`/assign-quiz/`+course.id}>Assign Quiz</Link>
                                 <button className='btn btn-danger btn-sm ms-2'>Delete</button>
                             </td>
                         </tr>

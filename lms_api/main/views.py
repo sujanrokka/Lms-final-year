@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.db.models import Q
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuestionSerializer
 from rest_framework.response import Response
 from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse,StudentAssignment,Notification,Quiz,QuizQuestions,CourseQuiz
 from rest_framework import generics
@@ -361,3 +361,13 @@ class TeacherQuizDetail(generics.RetrieveUpdateDestroyAPIView):
 class QuizDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
+    
+    
+class QuizQuestionList(generics.ListAPIView):
+    serializer_class = QuestionSerializer
+    
+    def get_queryset(self):
+        quiz_id=self.kwargs['quiz_id']
+        quiz=Quiz.objects.get(pk=quiz_id)
+        return QuizQuestions.objects.filter(quiz=quiz)
+        
