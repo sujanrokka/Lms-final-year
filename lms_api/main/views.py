@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from django.db.models import Q
-from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuestionSerializer
+from .serializers import TeacherSerializer,CategorySerializer,CourseSerializer,ChapterSerializer,StudentSerializer,StudentCourseEnrollSerializer,CourseRatingSerializer,TeacherDashboardSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer,NotificationSerializer,QuizSerializer,QuestionSerializer,CourseQuizSerializer,AttemptQuizSerializer
 from rest_framework.response import Response
-from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse,StudentAssignment,Notification,Quiz,QuizQuestions,CourseQuiz
+from .models import Teacher,Course,CourseCategory,Chapter,Student,StudentCourseEnrollment,CourseRating,StudentFavoriteCourse,StudentAssignment,Notification,Quiz,QuizQuestions,CourseQuiz,AttemptQuiz
 from rest_framework import generics
 from rest_framework import permissions
 from django.http import JsonResponse,HttpResponse
@@ -363,11 +363,43 @@ class QuizDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = QuizSerializer
     
     
-class QuizQuestionList(generics.ListAPIView):
+class  QuizQuestionList(generics.ListAPIView):
     serializer_class = QuestionSerializer
     
-    def get_queryset(self):
+    def get_queryset(self):   
         quiz_id=self.kwargs['quiz_id']
         quiz=Quiz.objects.get(pk=quiz_id)
-        return QuizQuestions.objects.filter(quiz=quiz)
+        if 'limit' in self.kwargs['quiz_id']:
+            return QuizQuestions.objects.filter(quiz=quiz).order_by('id')[:1]
+        else:
+            return QuizQuestions.objects.filter(quiz=quiz)
+    
+
+
+class CourseQuizList(generics.ListCreateAPIView):
+    queryset =CourseQuiz.objects.all()
+    serializer_class = CourseQuizSerializer
+    
+    def get_queryset(self):
+        if 'course_id' in self.kwargs:
+            course_id=self.kwargs['course_id']
+            course=Course.objects.get(pk=course_id)
+            return CourseQuiz.objects.filter(course=course)
         
+        
+def fetch_quiz_assign_status(request,quiz_id,course_id):
+    quiz=Quiz.objects.get(id=quiz_id)
+    course=Course.objects.get(id=course_id)
+    assignStatus=CourseQuiz.objects.filter(course=course,quiz=quiz).count()
+    
+    if assignStatus:
+        return JsonResponse({'bool': True})
+    else:
+        return JsonResponse({'bool': False})
+    
+
+class AttemptQuizList(generics.ListCreateAPIView):
+    queryset =AttemptQuiz.objects.all()
+    serializer_class = AttemptQuizSerializer
+    
+ 

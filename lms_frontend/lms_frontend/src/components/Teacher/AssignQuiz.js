@@ -3,6 +3,7 @@ import TeacherSidebar from './TeacherSidebar';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import CheckQuizinCourse from './CheckQuizinCourse';
 
 const baseUrl='http://127.0.0.1:8000/api';
 
@@ -59,25 +60,19 @@ function AssignQuiz()
         
         const assignQuiz=(quiz_id)=>{
             const formData=new FormData();
+            formData.append('teacher',teacherId);
             formData.append('course',course_id);
             formData.append('quiz',quiz_id);
           
             try{
-            axios.post(baseUrl+'/quiz-assign-course/',formData,{
-                headers:{
-                    'Content-Type':'multipart/form-data'
-                }
+                 axios.post(baseUrl+'/quiz-assign-course/',formData,{
+                    headers:{
+                        'Content-Type':'multipart/form-data'
+                    }
             })
            .then((res)=>{
             if(res.status===200 || res.status===201){
-                Swal.fire({ 
-                    title:'Quiz is succesfully assigned ',
-                    toast:'success',
-                    timer:3000,
-                    position:'top-right',
-                    timerProgressBar:true,
-                    showConfirmButton:false
-                 });
+           window.location.reload();
                 }
             });
         }catch(error){
@@ -111,14 +106,8 @@ function AssignQuiz()
                         <tr>
                             <td><Link to={`/all-questions/`+row.id} > {row.title} </Link>                      
                             </td>
-                            
-                          
-                            <td>
-                            {row.assign_status == 0 &&
-                            <button onClick={()=>assignQuiz(row.id)} className='btn btn-success btn-sm ms-2'>AssignQuiz</button>
-}
-                            </td>
-                        </tr>
+                            <CheckQuizinCourse quiz={row.id} course={course_id} />
+                            </tr>
                        )}
                     
                     </tbody>
