@@ -158,8 +158,7 @@ class StudentCourseEnrollment(models.Model):
     
     class  Meta:
         verbose_name_plural = '6.Enrolled Courses'
-        
-      
+    
     def __str__(self):
          return f"{self.course}-{self.student}"
         
@@ -259,9 +258,22 @@ class CourseQuiz(models.Model):
 #quiz que by student
 class AttemptQuiz(models.Model):
     student=models.ForeignKey(Student,on_delete=models.CASCADE,null=True)
+    quiz=models.ForeignKey(Quiz,on_delete=models.CASCADE,null=True)
     question=models.ForeignKey(QuizQuestions,on_delete=models.CASCADE,null=True)
     right_ans=models.CharField(max_length=200,null=True)
     add_time=models.DateTimeField(auto_now_add=True)
     
     class Meta:
         verbose_name_plural = '14. Attempt Questions '
+        
+        
+#Study material models   
+class StudyMaterial(models.Model):
+    course=models.ForeignKey(Course,on_delete=models.CASCADE,related_name='course_chapters')
+    title=models.CharField(max_length=150)
+    description=models.TextField()
+    video=models.FileField(upload_to='chapter_videos/',null=True)
+    remarks=models.TextField(null=True)
+    
+    class  Meta:
+        verbose_name_plural = '4.Chapters'

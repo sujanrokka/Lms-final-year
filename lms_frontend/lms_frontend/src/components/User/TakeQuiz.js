@@ -12,7 +12,6 @@ const baseUrl='http://127.0.0.1:8000/api';
 function TakeQuiz(){
     
     const [questionData,setquestionData]=useState([]);
-    const [totalResult,settotalResult]=useState([0]);
     const {quiz_id}=useParams();
     const studentId=localStorage.getItem('studentId');
 
@@ -28,22 +27,31 @@ function TakeQuiz(){
                     console.log(error);
                 }
                 },[]);
-            const submitAnswer=(question_id,right_ansans)=>{
+            const submitAnswer=(question_id,right_ans)=>{
                 const formData = new FormData();
                 formData.append('student', studentId);
+                formData.append('quiz', quiz_id);
                 formData.append('question', question_id);
                 formData.append('right_ans', questionData.right_ans);
 
         try {
-            axios.post(baseUrl+'/attempt-quiz/', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+                axios.post(baseUrl+'/attempt-quiz/', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
             .then((res)=>{
                 if (res.status === 200 || res.status === 201) {
-                   
-                    window.location.reload();
+                   try{
+                    axios.get(baseUrl+'/quiz-questions/'+quiz_id+'/next-question/'+question_id)
+                    .then((res)=>
+                    {
+                        setquestionData(res.data);
+                    });
+                   }
+                   catch(error){
+                       console.log(error);
+                   }
                 }
             });
             }catch (error) {

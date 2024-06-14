@@ -78,9 +78,16 @@ class CourseList(generics.ListCreateAPIView):
             teacher=Teacher.objects.filter(id=teacher).first()
             qs=Course.objects.filter(techs__icontains=skill_name,teacher=teacher)
             return qs
+         
+        if 'searchstring' in self.kwargs:
+            search=self.request.GET['searchstring']
+            if search:
+                qs=Course.objects.filter(Q(title__icontains=search)|Q(techs__icontains=search))
+            else:
+                qs=Course.objects.all()
+            return qs
         
-        
-        if 'studentId' in self.kwargs:
+        elif 'studentId' in self.kwargs:
             student_id=self.kwargs['studentId']
             student=Student.objects.get(pk=student_id)
             print(student.interested_categories)
@@ -371,6 +378,9 @@ class  QuizQuestionList(generics.ListAPIView):
         quiz=Quiz.objects.get(pk=quiz_id)
         if 'limit' in self.kwargs['quiz_id']:
             return QuizQuestions.objects.filter(quiz=quiz).order_by('id')[:1]
+        elif 'question_id' in self.kwargs:
+            current_question=self.kwargs['question_id']
+            return QuizQuestions.objects.filter(quiz=quiz,id__gt=current_question).order_by('id')[:1]
         else:
             return QuizQuestions.objects.filter(quiz=quiz)
     
@@ -379,7 +389,6 @@ class  QuizQuestionList(generics.ListAPIView):
 class CourseQuizList(generics.ListCreateAPIView):
     queryset =CourseQuiz.objects.all()
     serializer_class = CourseQuizSerializer
-    
     def get_queryset(self):
         if 'course_id' in self.kwargs:
             course_id=self.kwargs['course_id']
@@ -388,10 +397,9 @@ class CourseQuizList(generics.ListCreateAPIView):
         
         
 def fetch_quiz_assign_status(request,quiz_id,course_id):
-    quiz=Quiz.objects.get(id=quiz_id)
-    course=Course.objects.get(id=course_id)
+    quiz=Quiz.objects.filter(id=quiz_id)
+    course=Course.objects.filter(id=course_id)
     assignStatus=CourseQuiz.objects.filter(course=course,quiz=quiz).count()
-    
     if assignStatus:
         return JsonResponse({'bool': True})
     else:
@@ -401,5 +409,14 @@ def fetch_quiz_assign_status(request,quiz_id,course_id):
 class AttemptQuizList(generics.ListCreateAPIView):
     queryset =AttemptQuiz.objects.all()
     serializer_class = AttemptQuizSerializer
+    
+def fetch_quiz_attempt_status(request,quiz_id,student_id):
+    quiz=Quiz.objects.filter(id=quiz_id)
+    student=Student.objects.filter(id=student_id)
+    attemptStatus=AttemptQuiz.objects.filter(student=student,question__quiz=quiz).count()
+    if attemptStatus > 0:
+        return JsonResponse({'bool': True})
+    else:
+        return JsonResponse({'bool': False})
     
  

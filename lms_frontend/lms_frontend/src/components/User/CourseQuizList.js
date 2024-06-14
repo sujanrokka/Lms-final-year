@@ -3,12 +3,13 @@ import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
+import CheckQuizStatusForStudent from './CheckQuizStatusForStudent'
 const baseUrl='http://127.0.0.1:8000/api';
 
 function CourseQuizList(){
     const [quizData,setquizData]=useState([]);
     const studentId=localStorage.getItem('studentId');
-    const {course_id}=useParams();
+    const {course_id}=useParams(); 
     useEffect(()=>
         {
             try{
@@ -45,8 +46,9 @@ function CourseQuizList(){
                 <tbody>
               {quizData.map((row,index)=>
                  <tr>
-                   <td>{row.quiz.title}</td>
-                    <td><Link className='btn btn-sm btn-warning' to={`/take-quiz/`+row.quiz.id}>Take Quiz </Link> </td>
+                   <td>{row.quiz.title}
+                   </td>
+                   <CheckQuizStatusForStudent quiz={row.quiz.id} student={studentId}/>
                     </tr>
               )}
                 </tbody>

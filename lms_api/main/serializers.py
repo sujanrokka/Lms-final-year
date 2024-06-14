@@ -194,7 +194,7 @@ class CourseQuizSerializer(serializers.ModelSerializer):
 class AttemptQuizSerializer(serializers.ModelSerializer):
     class Meta:
         model=models.AttemptQuiz
-        fields=['id','student','question','add_time']
+        fields=['id','student','question','add_time','right_ans']
         
     def __init__(self,*args,**kwargs):
         super(AttemptQuizSerializer,self).__init__(*args, **kwargs)
